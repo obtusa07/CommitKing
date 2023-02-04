@@ -8,6 +8,8 @@
 import UIKit
 
 class ViewController: UIViewController {
+    
+    let getAddress = "https://github.com/login/oauth/authrize"
     private let loginButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .black
