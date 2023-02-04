@@ -33,7 +33,5 @@ class ViewController: UIViewController {
             loginButton.heightAnchor.constraint(equalToConstant: 200)
         ])
     }
-    
-
 }
 
