@@ -18,7 +18,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let _ = (scene as? UIWindowScene) else { return }
     }
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
-        print(URLContexts)
+        
+        guard let url = URLContexts.first?.url else { return }
+        GithubAPIManager.sharedInstance.tokenGenerate(url: url)
         
     }
     func sceneDidDisconnect(_ scene: UIScene) {
