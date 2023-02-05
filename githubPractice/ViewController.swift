@@ -44,7 +44,7 @@ class ViewController: UIViewController {
         components.queryItems = [
             URLQueryItem(name: "client_id", value: GithubConfig.CLIENT_ID),
             URLQueryItem(name: "scope", value: GithubConfig.SCOPE),
-            URLQueryItem(name: "redirect_uri", value: GithubConfig.REDIRECT_URI),
+            URLQueryItem(name: "redirect_uri", value: GithubConfig.REDIRECT_URI+"://login"),
             URLQueryItem(name: "state", value: uuid)
         ]
         UIApplication.shared.open(components.url!)
