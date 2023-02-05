@@ -6,10 +6,13 @@
 //
 
 import UIKit
+import WebKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, WKNavigationDelegate, WKNavigationDelegate {
     
+//    var webView = WKWebView()
     let getAddress = "https://github.com/login/oauth/authrize"
+    
     private let loginButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .black
@@ -32,6 +35,49 @@ class ViewController: UIViewController {
             loginButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30),
             loginButton.heightAnchor.constraint(equalToConstant: 200)
         ])
+    }
+     
+    func createGithubAuthVC() {
+        let githubViewController = UIViewController()
+        let uuid = UUID().uuidString
+        let webView = WKWebView()
+        
+        webView.navigationDelegate = self
+        
+        githubViewController.view.addSubview(webView)
+        webView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            loginButton.topAnchor.constraint(equalTo: githubViewController.view.topAnchor),
+            loginButton.leadingAnchor.constraint(equalTo: githubViewController.view.leadingAnchor),
+            loginButton.trailingAnchor.constraint(equalTo: githubViewController.view.trailingAnchor),
+            loginButton.bottomAnchor.constraint(equalTo: githubViewController.view.bottomAnchor)
+        ])
+        let authURLFull = "https://github.com/login/oauth/authorize?client_id=" + GithubConfig.CLIENT_ID + "&scope=" + GithubConfig.SCOPE + "&redirect_uri=" + GithubConfig.REDIRECT_URI + "&state=" + uuid
+        let urlRequest = URLRequest(url: URL(string: authURLFull)!)
+        webView.load(urlRequest)
+        
+        let navigationController = UINavigationController(rootViewController: githubViewController)
+        let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(self.cancelAction))
+        let refreshButton = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refreshAction))
+        
+        githubViewController.navigationItem.rightBarButtonItem = refreshButton
+        githubViewController.navigationItem.title = "github.com"
+        let textAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
+        navigationController.navigationBar.titleTextAttributes = textAttributes
+        navigationController.navigationBar.isTranslucent = false
+        navigationController.navigationBar.tintColor = UIColor.white
+        navigationController.navigationBar.barTintColor = UIColor.black
+        navigationController.modalPresentationStyle = UIModalPresentationStyle.overFullScreen
+        navigationController.modalTransitionStyle = .coverVertical
+        
+        self.present(navigationController, animated: true, completion: nil)
+    }
+    
+    @objc func cancelAction() {
+        self.dismiss(animated: true, completion: nil)
+    }
+    @objc func refreshAction() {
+        self.webView.reload()
     }
 }
 
