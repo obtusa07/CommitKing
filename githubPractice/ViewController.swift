@@ -11,7 +11,7 @@ import WebKit
 class ViewController: UIViewController {
     
 //    var webView = WKWebView()
-    let getAddress = "https://github.com/login/oauth/authrize"
+//    let getAddress = "https://github.com/login/oauth/authrize"
     
     private let loginButton: UIButton = {
         let button = UIButton()
@@ -38,12 +38,14 @@ class ViewController: UIViewController {
         ])
     }
     let loginAction = UIAction { _ in
-//        let uuid = UUID().uuidString
+        // "state" string to prevent XSS Attack
+        let uuid = UUID().uuidString
         var components = URLComponents(string: "https://github.com/login/oauth/authorize")!
         components.queryItems = [
             URLQueryItem(name: "client_id", value: GithubConfig.CLIENT_ID),
             URLQueryItem(name: "scope", value: GithubConfig.SCOPE),
-            URLQueryItem(name: "redirect_uri", value: GithubConfig.REDIRECT_URI)
+            URLQueryItem(name: "redirect_uri", value: GithubConfig.REDIRECT_URI),
+            URLQueryItem(name: "state", value: uuid)
         ]
         UIApplication.shared.open(components.url!)
     }

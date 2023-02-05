@@ -14,6 +14,7 @@
 		7BC73068298E7C11002DA095 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7BC73067298E7C11002DA095 /* Assets.xcassets */; };
 		7BC7306B298E7C11002DA095 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7BC73069298E7C11002DA095 /* LaunchScreen.storyboard */; };
 		7BC7307A298F5129002DA095 /* GithubConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BC73079298F5129002DA095 /* GithubConfig.swift */; };
+		7BC7307C298F8308002DA095 /* GithubAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BC7307B298F8308002DA095 /* GithubAPIManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		7BC7306A298E7C11002DA095 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		7BC7306C298E7C11002DA095 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7BC73079298F5129002DA095 /* GithubConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GithubConfig.swift; sourceTree = "<group>"; };
+		7BC7307B298F8308002DA095 /* GithubAPIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GithubAPIManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,6 +68,7 @@
 				7BC73067298E7C11002DA095 /* Assets.xcassets */,
 				7BC73069298E7C11002DA095 /* LaunchScreen.storyboard */,
 				7BC7306C298E7C11002DA095 /* Info.plist */,
+				7BC7307B298F8308002DA095 /* GithubAPIManager.swift */,
 			);
 			path = githubPractice;
 			sourceTree = "<group>";
@@ -143,6 +146,7 @@
 			files = (
 				7BC7307A298F5129002DA095 /* GithubConfig.swift in Sources */,
 				7BC73063298E7C10002DA095 /* ViewController.swift in Sources */,
+				7BC7307C298F8308002DA095 /* GithubAPIManager.swift in Sources */,
 				7BC7305F298E7C10002DA095 /* AppDelegate.swift in Sources */,
 				7BC73061298E7C10002DA095 /* SceneDelegate.swift in Sources */,
 			);
