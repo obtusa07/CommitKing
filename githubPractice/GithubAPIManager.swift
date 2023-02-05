@@ -17,7 +17,7 @@ class GithubAPIManager {
     // Json으로 보내면 아래와 같은 놈이 나올거
     // Accept: application/json
 //    {
-//      "access_token":"gho_16C7e42F292c6912E7710c838347Ae178B4a",
+//      "access_token":"tesaknlsdf;osdjfobds;fbsnd;bsdfiansbdf",
 //      "scope":"repo,gist",
 //      "token_type":"bearer"
 //    }
