@@ -38,15 +38,21 @@ class ViewController: UIViewController {
         ])
     }
     let loginAction = UIAction { _ in
-        // "state" string to prevent XSS Attack
+        // MARK: "state" string prevent cross site request forgery attack
         let uuid = UUID().uuidString
-        var components = URLComponents(string: GithubConfig.CODEURL)!
+        print("오리지널 uuid: \(uuid)")
+        guard var components = URLComponents(string: GithubConfig.CODEURL) else {
+            preconditionFailure("GithubConfig is broken. Fail to load CODEURL")
+        }
         components.queryItems = [
             URLQueryItem(name: "client_id", value: GithubConfig.CLIENT_ID),
             URLQueryItem(name: "scope", value: GithubConfig.SCOPE),
-            URLQueryItem(name: "redirect_uri", value: GithubConfig.REDIRECT_URI+"://login"),
+            URLQueryItem(name: "redirect_uri", value: GithubConfig.REDIRECT_URI_LOGIN),
             URLQueryItem(name: "state", value: uuid)
         ]
+        guard let url = components.url else {
+            preconditionFailure("GithubConfig is broken. Fail to make URL")
+        }
         UIApplication.shared.open(components.url!)
     }
     
