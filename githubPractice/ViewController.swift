@@ -40,7 +40,7 @@ class ViewController: UIViewController {
     let loginAction = UIAction { _ in
         // "state" string to prevent XSS Attack
         let uuid = UUID().uuidString
-        var components = URLComponents(string: "https://github.com/login/oauth/authorize")!
+        var components = URLComponents(string: GithubConfig.CODEURL)!
         components.queryItems = [
             URLQueryItem(name: "client_id", value: GithubConfig.CLIENT_ID),
             URLQueryItem(name: "scope", value: GithubConfig.SCOPE),
