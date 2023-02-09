@@ -16,7 +16,7 @@ class GithubAPIManager {
     // Json으로 보내면 아래와 같은 놈이 나올거
     // Accept: application/json
 //    {
-//      "access_token":"tesaknlsdf;osdjfobds;fbsnd;bsdfiansbdf",
+//      "access_token":"tesaknlsdf;osdjfobds;fbsnd;bsdfiansasdfasdfasdfsabdf",
 //      "scope":"repo,gist",
 //      "token_type":"bearer"
 //    }
@@ -70,7 +70,7 @@ class GithubAPIManager {
             guard let result = String(data: data, encoding: .utf8) else {
                 preconditionFailure("Fail to generate Token result")
             }
-            print(result) // "access_token=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&scope=read%3Auser%2Cuser%3Aemail&token_type=bearer"
+            print(result) //
             
             // MARK: UserDefaults에 토큰 저장
             UserDefaults.standard.object(forKey: <#T##String#>)
