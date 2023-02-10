@@ -14,13 +14,7 @@ class GithubAPIManager {
     // 현재 ViewController에서 관리
     
     // MARK: URL을 Scene에서 받아서 POST로 보내고 Token 받아오기
-    // Json으로 보내면 아래와 같은 놈이 나올거
-    // Accept: application/json
-    //    {
-    //      "access_token":"tesaknlsdf;osdjfobds;fbsnd;bsdfiansasdfasdfasdfsabdf",
-    //      "scope":"repo,gist",
-    //      "token_type":"bearer"
-    //    }
+
     func tokenGenerate(url: URL) {
         guard let codeAndState = url.absoluteString.components(separatedBy: "code=").last else {
             preconditionFailure("Fail to find code in redirected url ")
@@ -38,18 +32,6 @@ class GithubAPIManager {
         //        if state == ViewController.uuid {
         //            print("something is good")
         //        }
-        
-        //        guard var components = URLComponents(string: GithubConfig.TOKENURL) else {
-        //            preconditionFailure("GithubConfig is broken. Fail to load TOKENURL")
-        //        }
-        
-        //        components.queryItems = [
-        //            URLQueryItem(name: "client_id", value: GithubConfig.CLIENT_ID),
-        //            URLQueryItem(name: "client_secret", value: GithubConfig.CLIENT_SECRET),
-        //            URLQueryItem(name: "code", value: code),
-        //            URLQueryItem(name: "redirect_uri", value: GithubConfig.REDIRECT_URI_LOGIN),
-        //            URLQueryItem(name: "state", value: state)
-        //        ]
         
         let param = ["client_id": GithubConfig.CLIENT_ID, "client_secret": GithubConfig.CLIENT_SECRET,
                      "code": code, "redirect_uri":GithubConfig.REDIRECT_URI_LOGIN]
@@ -78,32 +60,9 @@ class GithubAPIManager {
                 let decoder = JSONDecoder()
                 let token = try decoder.decode(GithubTokenParser.self, from: data)
                 // MARK: KeyChain에 토큰 저장. encrytion 불가 문제로 UserDefaults 대신 채택
-                let tokenData = token.accessToken.data(using: .utf8)
-                let query: [CFString: Any] = [kSecClass: kSecClassGenericPassword,
-                                            kSecAttrService: Bundle.main.bundleIdentifier!,
-                                            kSecAttrAccount: "TokenService",
-                                            kSecValueData: tokenData!]
+                GithubAPIManager.saveTokenInKeychain(token: token)
+                print(GithubAPIManager.findTokenInKeychain(token: token))
 
-                let status = SecItemAdd(query as CFDictionary, nil)
-                if status == errSecSuccess {
-                    print("Successfully added to keychain.")
-                } else {
-                    if let error: String = SecCopyErrorMessageString(status, nil) as String? {
-                        print(error)
-                    }
-                }
-//                // Retrieve token from Keychain
-//                var queryResult: AnyObject?
-//                let retrieveQuery: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
-//                                                    kSecAttrAccount as String: "token_key",
-//                                                    kSecReturnData as String: true,
-//                                                    kSecMatchLimit as String: kSecMatchLimitOne]
-//                let retrieveStatus = SecItemCopyMatching(retrieveQuery as CFDictionary, &queryResult)
-//
-//                if retrieveStatus == errSecSuccess, let retrievedTokenData = queryResult as? Data,
-//                    let retrievedToken = String(data: retrievedTokenData, encoding: .utf8) {
-//                    print("Retrieved token: \(retrievedToken)")
-//                }
             } catch {
                 preconditionFailure("Can't decode Token json Data")
             }
@@ -111,9 +70,50 @@ class GithubAPIManager {
         
         
     }
+    static func saveTokenInKeychain(token: GithubTokenParser) {
+        let tokenData = token.accessToken.data(using: .utf8)
+        let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
+                                    kSecAttrService as String: Bundle.main.bundleIdentifier!,
+                                    kSecAttrAccount as String: "TokenService",
+                                    kSecValueData as String: tokenData!]
+
+        let status = SecItemAdd(query as CFDictionary, nil)
+        if status == errSecSuccess {
+            print("Successfully added to keychain.")
+        } else {
+            if let error: String = SecCopyErrorMessageString(status, nil) as String? {
+                print(error)
+                // MARK: 이 토큰이 어떤 기한을 가지는지 모르겠다. 토큰이 유효하지 않게 되면 여기서 해당 코드에 대한 error 처리를 해줘야 한다.
+            }
+        }
+    }
     
+    static func findTokenInKeychain(token: GithubTokenParser) -> String {
+        let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
+                                kSecAttrService as String: Bundle.main.bundleIdentifier!,
+                                kSecAttrAccount as String: "TokenService",
+                                 kSecMatchLimit as String: kSecMatchLimitOne,
+                           kSecReturnAttributes as String: true,
+                                 kSecReturnData as String: true]
+        var item: CFTypeRef?
+        let status = SecItemCopyMatching(query as CFDictionary, &item)
+        if status == errSecSuccess {
+            print("Successfully extracted to Keychain")
+        } else {
+            if let error: String = SecCopyErrorMessageString(status, nil) as String? {
+                print(error)
+            }
+        }
+        guard let existingItem = item as? [String : Any],
+              let tokenData = existingItem[kSecValueData as String] as? Data,
+              let token = String(data: tokenData, encoding: String.Encoding.utf8) else {
+            preconditionFailure("Failed to load token data to Keychain")
+        }
+        return token
+    }
     func logout() {
-        // UserDefaults로 토큰 삭제
+        // MARK: Keychain "TokenService"의 Token 데이터 삭제, UserDefaults의 토글 false
+        
         // 여기서 View를 최초 화면으로 가게 하는게 맞나? 고려할 것
     }
 }
