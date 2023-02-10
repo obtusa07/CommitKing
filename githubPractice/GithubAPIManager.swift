@@ -7,12 +7,29 @@
 
 import Foundation
 import Security
+import UIKit
 
 class GithubAPIManager {
     static let sharedInstance = GithubAPIManager()
-    // MARK: 이곳으로 Code 받는 로그인 시도 옮겨오기
-    // 현재 ViewController에서 관리
     
+    static func loginButtonClicked() {
+        let uuid = UUID().uuidString
+        print("오리지널 uuid: \(uuid)")
+        guard var components = URLComponents(string: GithubConfig.CODEURL) else {
+            preconditionFailure("GithubConfig is broken. Fail to load CODEURL")
+        }
+        components.queryItems = [
+            URLQueryItem(name: "client_id", value: GithubConfig.CLIENT_ID),
+            URLQueryItem(name: "scope", value: GithubConfig.SCOPE),
+            URLQueryItem(name: "redirect_uri", value: GithubConfig.REDIRECT_URI_LOGIN),
+            URLQueryItem(name: "state", value: uuid)
+        ]
+        guard let url = components.url else {
+            preconditionFailure("GithubConfig is broken. Fail to make URL")
+        }
+        UserDefaults.standard.set(uuid, forKey: "LoginCodeState")
+        UIApplication.shared.open(url)
+    }
     // MARK: URL을 Scene에서 받아서 POST로 보내고 Token 받아오기
 
     func tokenGenerate(url: URL) {
@@ -24,14 +41,16 @@ class GithubAPIManager {
         guard let code = codeAndState.components(separatedBy: "&state=").first else {
             preconditionFailure("Cant't separeated code")
         }
-        print(code)
+        
         guard let state = codeAndState.components(separatedBy: "&state=").last else {
             preconditionFailure("Cant't separeated state")
         }
-        // TODO: CSRF 공격을 방어하기 위하여 1차 통신 때 uuid와 돌아온 state가 같지 않으면 과정을 중단할 것. 순위가 낮다
-        //        if state == ViewController.uuid {
-        //            print("something is good")
-        //        }
+        
+        // TODO: CSRF 공격을 방어하기 위하여 State와 비교 진행
+        let original = UserDefaults.standard.string(forKey: "LoginCodeState")
+        if original != state {
+            fatalError("통신이 안전하지 않습니다. - CSRF")
+        }
         
         let param = ["client_id": GithubConfig.CLIENT_ID, "client_secret": GithubConfig.CLIENT_SECRET,
                      "code": code, "redirect_uri":GithubConfig.REDIRECT_URI_LOGIN]
@@ -62,7 +81,6 @@ class GithubAPIManager {
                 // MARK: KeyChain에 토큰 저장. encrytion 불가 문제로 UserDefaults 대신 채택
                 GithubAPIManager.saveTokenInKeychain(token: token)
                 print(GithubAPIManager.findTokenInKeychain(token: token))
-
             } catch {
                 preconditionFailure("Can't decode Token json Data")
             }
@@ -76,7 +94,6 @@ class GithubAPIManager {
                                     kSecAttrService as String: Bundle.main.bundleIdentifier!,
                                     kSecAttrAccount as String: "TokenService",
                                     kSecValueData as String: tokenData!]
-
         let status = SecItemAdd(query as CFDictionary, nil)
         if status == errSecSuccess {
             print("Successfully added to keychain.")
@@ -111,9 +128,21 @@ class GithubAPIManager {
         }
         return token
     }
-    func logout() {
+    
+    static func logout() {
         // MARK: Keychain "TokenService"의 Token 데이터 삭제, UserDefaults의 토글 false
-        
+        #warning("UserDefaults 처리 안 함")
+        let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
+                                    kSecAttrService as String: Bundle.main.bundleIdentifier!,
+                                    kSecAttrAccount as String: "TokenService"]
+        let status = SecItemDelete(query as CFDictionary)
+        if status == errSecSuccess {
+            print("Successfully deleted Token to Keychain")
+        } else {
+            if let error: String = SecCopyErrorMessageString(status, nil) as String? {
+                print(error)
+            }
+        }
         // 여기서 View를 최초 화면으로 가게 하는게 맞나? 고려할 것
     }
 }
