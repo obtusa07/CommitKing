@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Security
 
 class GithubAPIManager {
     static let sharedInstance = GithubAPIManager()
@@ -77,7 +78,32 @@ class GithubAPIManager {
                 let decoder = JSONDecoder()
                 let token = try decoder.decode(GithubTokenParser.self, from: data)
                 // MARK: KeyChain에 토큰 저장. encrytion 불가 문제로 UserDefaults 대신 채택
-                
+                let tokenData = token.accessToken.data(using: .utf8)
+                let query: [CFString: Any] = [kSecClass: kSecClassGenericPassword,
+                                            kSecAttrService: Bundle.main.bundleIdentifier!,
+                                            kSecAttrAccount: "TokenService",
+                                            kSecValueData: tokenData!]
+
+                let status = SecItemAdd(query as CFDictionary, nil)
+                if status == errSecSuccess {
+                    print("Successfully added to keychain.")
+                } else {
+                    if let error: String = SecCopyErrorMessageString(status, nil) as String? {
+                        print(error)
+                    }
+                }
+//                // Retrieve token from Keychain
+//                var queryResult: AnyObject?
+//                let retrieveQuery: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
+//                                                    kSecAttrAccount as String: "token_key",
+//                                                    kSecReturnData as String: true,
+//                                                    kSecMatchLimit as String: kSecMatchLimitOne]
+//                let retrieveStatus = SecItemCopyMatching(retrieveQuery as CFDictionary, &queryResult)
+//
+//                if retrieveStatus == errSecSuccess, let retrievedTokenData = queryResult as? Data,
+//                    let retrievedToken = String(data: retrievedTokenData, encoding: .utf8) {
+//                    print("Retrieved token: \(retrievedToken)")
+//                }
             } catch {
                 preconditionFailure("Can't decode Token json Data")
             }
