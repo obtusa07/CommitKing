@@ -41,10 +41,9 @@ class ViewController: UIViewController {
             loginButton.heightAnchor.constraint(equalToConstant: 200)
         ])
     }
+    
     let loginAction = UIAction { _ in
-        // MARK: "state" string prevent cross site request forgery attack
         GithubAPIManager.loginButtonClicked()
-        
     }
     
     @objc func cancelAction() {

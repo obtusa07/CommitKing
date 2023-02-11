@@ -13,6 +13,7 @@ class GithubAPIManager {
     static let sharedInstance = GithubAPIManager()
     
     static func loginButtonClicked() {
+        // MARK: "state" string prevent cross site request forgery attack
         let uuid = UUID().uuidString
         print("오리지널 uuid: \(uuid)")
         guard var components = URLComponents(string: GithubConfig.CODEURL) else {

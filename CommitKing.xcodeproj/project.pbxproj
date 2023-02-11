@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7B49B15429977C4100EFD4D7 /* GithubConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B49B15329977C4100EFD4D7 /* GithubConfig.swift */; };
 		7BC7305F298E7C10002DA095 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BC7305E298E7C10002DA095 /* AppDelegate.swift */; };
 		7BC73061298E7C10002DA095 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BC73060298E7C10002DA095 /* SceneDelegate.swift */; };
 		7BC73063298E7C10002DA095 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BC73062298E7C10002DA095 /* ViewController.swift */; };
@@ -17,6 +18,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		7B49B15329977C4100EFD4D7 /* GithubConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GithubConfig.swift; sourceTree = "<group>"; };
 		7BC7305B298E7C10002DA095 /* CommitKing.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CommitKing.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7BC7305E298E7C10002DA095 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7BC73060298E7C10002DA095 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -66,6 +68,7 @@
 				7BC73069298E7C11002DA095 /* LaunchScreen.storyboard */,
 				7BC7306C298E7C11002DA095 /* Info.plist */,
 				7BC7307B298F8308002DA095 /* GithubAPIManager.swift */,
+				7B49B15329977C4100EFD4D7 /* GithubConfig.swift */,
 			);
 			path = CommitKing;
 			sourceTree = "<group>";
@@ -143,6 +146,7 @@
 			files = (
 				7BC73063298E7C10002DA095 /* ViewController.swift in Sources */,
 				7BC7307C298F8308002DA095 /* GithubAPIManager.swift in Sources */,
+				7B49B15429977C4100EFD4D7 /* GithubConfig.swift in Sources */,
 				7BC7305F298E7C10002DA095 /* AppDelegate.swift in Sources */,
 				7BC73061298E7C10002DA095 /* SceneDelegate.swift in Sources */,
 			);
