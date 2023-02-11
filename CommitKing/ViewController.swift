@@ -1,6 +1,6 @@
 //
 //  ViewController.swift
-//  githubPractice
+//  CommitKing
 //
 //  Created by Taehwan Kim on 2023/02/04.
 //
@@ -28,6 +28,10 @@ class ViewController: UIViewController {
     }
     
     private func setupUI() {
+        // MARK: - View 세팅
+        view.backgroundColor = .white
+        
+        // MARK: - LoginButton 세팅
         view.addSubview(loginButton)
         loginButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([

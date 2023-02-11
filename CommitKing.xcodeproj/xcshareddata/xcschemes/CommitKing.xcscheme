@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "7BC7305A298E7C10002DA095"
-               BuildableName = "githubPractice.app"
-               BlueprintName = "githubPractice"
+               BuildableName = "CommitKing.app"
+               BlueprintName = "CommitKing"
                ReferencedContainer = "container:CommitKing.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -45,8 +45,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "7BC7305A298E7C10002DA095"
-            BuildableName = "githubPractice.app"
-            BlueprintName = "githubPractice"
+            BuildableName = "CommitKing.app"
+            BlueprintName = "CommitKing"
             ReferencedContainer = "container:CommitKing.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -62,8 +62,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "7BC7305A298E7C10002DA095"
-            BuildableName = "githubPractice.app"
-            BlueprintName = "githubPractice"
+            BuildableName = "CommitKing.app"
+            BlueprintName = "CommitKing"
             ReferencedContainer = "container:CommitKing.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

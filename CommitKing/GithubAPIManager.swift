@@ -1,6 +1,6 @@
 //
 //  GithubAPIManager.swift
-//  githubPractice
+//  CommitKing
 //
 //  Created by Taehwan Kim on 2023/02/05.
 //
