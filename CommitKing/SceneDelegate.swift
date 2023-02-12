@@ -19,16 +19,17 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         guard let scene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: scene)
-        let mainViewController = ViewController()
+        let mainViewController = LoginViewController()
         window?.rootViewController = mainViewController
         window?.makeKeyAndVisible()
         
     }
+    
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
         guard let url = URLContexts.first?.url else { return }
         GithubAPIManager.sharedInstance.tokenGenerate(url: url)
-        
     }
+    
     func sceneDidDisconnect(_ scene: UIScene) {
         // Called as the scene is being released by the system.
         // This occurs shortly after the scene enters the background, or when its session is discarded.

@@ -32,7 +32,7 @@ class GithubAPIManager {
     }
     // MARK: URL을 Scene에서 받아서 POST로 보내고 Token 받아오기
 
-    func tokenGenerate(url: URL) {
+    static func tokenGenerate(url: URL) {
         guard let codeAndState = url.absoluteString.components(separatedBy: "code=").last else {
             preconditionFailure("Fail to find code in redirected url ")
         }
@@ -85,6 +85,7 @@ class GithubAPIManager {
         
         
     }
+    
     static func saveTokenInKeychain(token: GithubTokenParser) {
         let tokenData = token.accessToken.data(using: .utf8)
         let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
@@ -128,7 +129,7 @@ class GithubAPIManager {
     
     static func logout() {
         // MARK: Keychain "TokenService"의 Token 데이터 삭제, UserDefaults의 토글 false
-        #warning("UserDefaults 처리 안 함")
+        #warning("UserDefaults toggle 처리 안 함")
         let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
                                     kSecAttrService as String: Bundle.main.bundleIdentifier!,
                                     kSecAttrAccount as String: "TokenService"]

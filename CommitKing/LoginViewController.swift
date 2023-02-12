@@ -8,7 +8,7 @@
 import UIKit
 import WebKit
 
-class ViewController: UIViewController {
+class LoginViewController: UIViewController {
     
 //    var webView = WKWebView()
 //    let getAddress = "https://github.com/login/oauth/authrize"
@@ -32,8 +32,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-        loginButton.addAction(loginAction, for: .touchUpInside)
-        getUserInfomationButton.addAction(getUserAction, for: .touchUpInside)
+        buttonAction()
     }
     
     private func setupUI() {
@@ -59,15 +58,17 @@ class ViewController: UIViewController {
             getUserInfomationButton.heightAnchor.constraint(equalToConstant: 50)
         ])
     }
+    private func buttonAction() {
+        loginButton.addAction(loginAction, for: .touchUpInside)
+        getUserInfomationButton.addAction(getUserAction, for: .touchUpInside)
+    }
     
     let loginAction = UIAction { _ in
         GithubAPIManager.loginButtonClicked()
     }
+    
     let getUserAction = UIAction { _ in
         print("user")
-    }
-    @objc func cancelAction() {
-        self.dismiss(animated: true, completion: nil)
     }
     
 }
