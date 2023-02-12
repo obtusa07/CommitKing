@@ -21,10 +21,19 @@ class ViewController: UIViewController {
         return button
     }()
     
+    private let getUserInfomationButton: UIButton = {
+        let button = UIButton()
+        button.backgroundColor = .gray
+        button.tintColor = .white
+        button.setTitle("UserInfo 출력", for: .normal)
+        return button
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
         loginButton.addAction(loginAction, for: .touchUpInside)
+        getUserInfomationButton.addAction(getUserAction, for: .touchUpInside)
     }
     
     private func setupUI() {
@@ -33,19 +42,30 @@ class ViewController: UIViewController {
         
         // MARK: - LoginButton 세팅
         view.addSubview(loginButton)
+        view.addSubview(getUserInfomationButton)
+        
         loginButton.translatesAutoresizingMaskIntoConstraints = false
+        getUserInfomationButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             loginButton.topAnchor.constraint(equalTo: view.centerYAnchor, constant: 30),
             loginButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
             loginButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30),
-            loginButton.heightAnchor.constraint(equalToConstant: 200)
+            loginButton.heightAnchor.constraint(equalToConstant: 50)
+        ])
+        NSLayoutConstraint.activate([
+            getUserInfomationButton.topAnchor.constraint(equalTo: view.centerYAnchor, constant: -60),
+            getUserInfomationButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
+            getUserInfomationButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30),
+            getUserInfomationButton.heightAnchor.constraint(equalToConstant: 50)
         ])
     }
     
     let loginAction = UIAction { _ in
         GithubAPIManager.loginButtonClicked()
     }
-    
+    let getUserAction = UIAction { _ in
+        print("user")
+    }
     @objc func cancelAction() {
         self.dismiss(animated: true, completion: nil)
     }

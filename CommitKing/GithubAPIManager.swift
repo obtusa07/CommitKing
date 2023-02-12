@@ -13,7 +13,6 @@ class GithubAPIManager {
     static let sharedInstance = GithubAPIManager()
     
     static func loginButtonClicked() {
-        // MARK: "state" string prevent cross site request forgery attack
         let uuid = UUID().uuidString
         print("오리지널 uuid: \(uuid)")
         guard var components = URLComponents(string: GithubConfig.CODEURL) else {
@@ -37,20 +36,17 @@ class GithubAPIManager {
         guard let codeAndState = url.absoluteString.components(separatedBy: "code=").last else {
             preconditionFailure("Fail to find code in redirected url ")
         }
-        
-        // 7f9496b62db3ed929b30&state=1CD18A2C-E17A-40AE-846B-9B8DA10A0D2F
         guard let code = codeAndState.components(separatedBy: "&state=").first else {
             preconditionFailure("Cant't separeated code")
         }
-        
         guard let state = codeAndState.components(separatedBy: "&state=").last else {
             preconditionFailure("Cant't separeated state")
         }
         
-        // TODO: CSRF 공격을 방어하기 위하여 State와 비교 진행
+        // MARK: "state" string prevent "cross site request forgery(CSRF)" attack
         let original = UserDefaults.standard.string(forKey: "LoginCodeState")
         if original != state {
-            fatalError("통신이 안전하지 않습니다. - CSRF")
+            fatalError("CSRF 공격이 감지되었습니다.")
         }
         
         let param = ["client_id": GithubConfig.CLIENT_ID, "client_secret": GithubConfig.CLIENT_SECRET,
