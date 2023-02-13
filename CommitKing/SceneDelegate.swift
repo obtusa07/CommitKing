@@ -19,10 +19,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         guard let scene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: scene)
-        let mainViewController = LoginViewController()
-        window?.rootViewController = mainViewController
-        window?.makeKeyAndVisible()
         
+        if UserDefaults.standard.bool(forKey: "isTokenAvailable") {
+            window?.rootViewController = MainViewController()
+        } else {
+            window?.rootViewController = LoginViewController()
+        }
+        
+        window?.makeKeyAndVisible()
     }
     
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {

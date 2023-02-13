@@ -43,11 +43,13 @@ class GithubAPIManager {
             preconditionFailure("Cant't separeated state")
         }
         
-        // MARK: "state" string prevent "cross site request forgery(CSRF)" attack
+        // MARK: --"state" string prevent "cross site request forgery(CSRF)" attack
         let original = UserDefaults.standard.string(forKey: "LoginCodeState")
         if original != state {
             fatalError("CSRF 공격이 감지되었습니다.")
         }
+        UserDefaults.standard.removeObject(forKey: "LoginCodeState")
+        
         
         let param = ["client_id": GithubConfig.CLIENT_ID, "client_secret": GithubConfig.CLIENT_SECRET,
                      "code": code, "redirect_uri":GithubConfig.REDIRECT_URI_LOGIN]
@@ -77,7 +79,6 @@ class GithubAPIManager {
                 let token = try decoder.decode(GithubToken.self, from: data)
                 // MARK: KeyChain에 토큰 저장. encrytion 불가 문제로 UserDefaults 대신 채택
                 GithubAPIManager.saveTokenInKeychain(token: token)
-                print(GithubAPIManager.findTokenInKeychain())
             } catch {
                 preconditionFailure("Can't decode Token json Data")
             }
@@ -128,18 +129,18 @@ class GithubAPIManager {
     
     static func logout() {
         // MARK: Keychain "TokenService"의 Token 데이터 삭제, UserDefaults의 토글 false
-        #warning("UserDefaults toggle 처리 안 함")
         let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
                                     kSecAttrService as String: Bundle.main.bundleIdentifier!,
                                     kSecAttrAccount as String: "TokenService"]
         let status = SecItemDelete(query as CFDictionary)
         if status == errSecSuccess {
             print("Successfully deleted Token to Keychain")
+            UserDefaults.standard.set(false, forKey: "isTokenAvailable")
+            // 여기서 초기화면으로 보내버리기
         } else {
             if let error: String = SecCopyErrorMessageString(status, nil) as String? {
                 print(error)
             }
         }
-        // 여기서 View를 최초 화면으로 가게 하는게 맞나? 고려할 것
     }
 }
