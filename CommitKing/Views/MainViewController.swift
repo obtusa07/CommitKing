@@ -37,7 +37,8 @@ class MainViewController: UIViewController {
     private func buttonAction() {
         getUserInfomationButton.addAction(getUserAction, for: .touchUpInside)
     }
+    
     let getUserAction = UIAction { _ in
-        print("user")
+        GithubAPIManager.getMyInfo()
     }
 }

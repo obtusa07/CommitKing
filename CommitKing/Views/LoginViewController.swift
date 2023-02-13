@@ -9,8 +9,6 @@ import UIKit
 import WebKit
 
 class LoginViewController: UIViewController {
-//    var webView = WKWebView()
-//    let getAddress = "https://github.com/login/oauth/authrize"
     
     private let loginButton: UIButton = {
         let button = UIButton()

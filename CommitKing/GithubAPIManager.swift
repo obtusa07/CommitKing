@@ -126,6 +126,33 @@ class GithubAPIManager {
         }
         return token
     }
+    static func getMyInfo() {
+        guard let url = URL(string: GithubUrls.MYINFO) else {
+            preconditionFailure("GithubConfig is broken. Fail to load TOKENURL")
+        }
+        let token = findTokenInKeychain()
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.addValue("application/vnd.github+json", forHTTPHeaderField: "Accept")
+        request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        let configuration = URLSessionConfiguration.default
+        
+        URLSession(configuration: configuration).dataTask(with: request) { data, response, error in
+            guard let response = response as? HTTPURLResponse, (200..<300).contains(response.statusCode) else {
+                preconditionFailure("Failed to receive Token response \(String(describing: response))")
+            }
+            guard let data = data else {
+                preconditionFailure("Failed to receive Token Data")
+            }
+            do {
+                let decoder = JSONDecoder()
+                let result = try decoder.decode(GithubMyInfo.self, from: data)
+                print(result)
+            } catch {
+                preconditionFailure("Can't decode Token json Data")
+            }
+        }.resume()
+    }
     
     static func logout() {
         // MARK: Keychain "TokenService"의 Token 데이터 삭제, UserDefaults의 토글 false
@@ -144,3 +171,13 @@ class GithubAPIManager {
         }
     }
 }
+
+
+/*
+ json 뽑아서 보는 용도 테스트 코드
+ if let json = try? JSONSerialization.jsonObject(with: data, options: []) as? [String : Any] {
+    if let name = json["name"] as? String {
+        print(name) // hyeon
+    }
+ }
+ */
