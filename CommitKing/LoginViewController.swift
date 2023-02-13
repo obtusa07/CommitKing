@@ -9,7 +9,6 @@ import UIKit
 import WebKit
 
 class LoginViewController: UIViewController {
-    
 //    var webView = WKWebView()
 //    let getAddress = "https://github.com/login/oauth/authrize"
     
@@ -65,6 +64,7 @@ class LoginViewController: UIViewController {
     
     let loginAction = UIAction { _ in
         GithubAPIManager.loginButtonClicked()
+    
     }
     
     let getUserAction = UIAction { _ in

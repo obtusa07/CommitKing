@@ -10,7 +10,7 @@ import Security
 import UIKit
 
 class GithubAPIManager {
-    static let sharedInstance = GithubAPIManager()
+//    static let shared = GithubAPIManager()
     
     static func loginButtonClicked() {
         let uuid = UUID().uuidString
@@ -30,8 +30,8 @@ class GithubAPIManager {
         UserDefaults.standard.set(uuid, forKey: "LoginCodeState")
         UIApplication.shared.open(url)
     }
-    // MARK: URL을 Scene에서 받아서 POST로 보내고 Token 받아오기
-
+    
+    // MARK: URL을 Scene에서 받아서 POST로 보내고 Token 받아오는 메서드
     static func tokenGenerate(url: URL) {
         guard let codeAndState = url.absoluteString.components(separatedBy: "code=").last else {
             preconditionFailure("Fail to find code in redirected url ")
@@ -74,19 +74,17 @@ class GithubAPIManager {
             }
             do {
                 let decoder = JSONDecoder()
-                let token = try decoder.decode(GithubTokenParser.self, from: data)
+                let token = try decoder.decode(GithubToken.self, from: data)
                 // MARK: KeyChain에 토큰 저장. encrytion 불가 문제로 UserDefaults 대신 채택
                 GithubAPIManager.saveTokenInKeychain(token: token)
-                print(GithubAPIManager.findTokenInKeychain(token: token))
+                print(GithubAPIManager.findTokenInKeychain())
             } catch {
                 preconditionFailure("Can't decode Token json Data")
             }
         }.resume()
-        
-        
     }
     
-    static func saveTokenInKeychain(token: GithubTokenParser) {
+    static func saveTokenInKeychain(token: GithubToken) {
         let tokenData = token.accessToken.data(using: .utf8)
         let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
                                     kSecAttrService as String: Bundle.main.bundleIdentifier!,
@@ -95,6 +93,7 @@ class GithubAPIManager {
         let status = SecItemAdd(query as CFDictionary, nil)
         if status == errSecSuccess {
             print("Successfully added to keychain.")
+            UserDefaults.standard.set(true, forKey: "isTokenAvailable")
         } else {
             if let error: String = SecCopyErrorMessageString(status, nil) as String? {
                 print(error)
@@ -103,7 +102,7 @@ class GithubAPIManager {
         }
     }
     
-    static func findTokenInKeychain(token: GithubTokenParser) -> String {
+    static func findTokenInKeychain() -> String {
         let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
                                 kSecAttrService as String: Bundle.main.bundleIdentifier!,
                                 kSecAttrAccount as String: "TokenService",
