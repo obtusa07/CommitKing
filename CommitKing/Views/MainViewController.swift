@@ -58,6 +58,14 @@ class MainViewController: UIViewController {
         GithubAPIManager.getMyInfo()
     }
     let getTotalCommitCount = UIAction { _ in
-        GithubAPIManager.totalCommits(username: "obtusa07")
+//        GithubAPIManager.totalCommits(username: "obtusa07")
+        GithubAPIManager.getgetgetTemp(username: "obtusa07", days: 7) { count, error in
+            if let count = count {
+                print("Number of commits in the last week: \(count)")
+            } else if let error = error {
+                print("Error: \(error.localizedDescription)")
+            }
+        }
+
     }
 }

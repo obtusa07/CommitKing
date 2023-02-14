@@ -9,7 +9,7 @@ import Foundation
 
 struct GithubEventConfigElement: Codable {
     let id: String
-    let type: TypeEnum
+    let type: String
     let actor: Actor
     let repo: Repo
     let payload: Payload
@@ -26,7 +26,7 @@ struct GithubEventConfigElement: Codable {
 // MARK: - Actor
 struct Actor: Codable {
     let id: Int
-    let login, displayLogin: Login
+    let login, displayLogin: String
     let gravatarID: String
     let url, avatarURL: String
 
@@ -39,18 +39,14 @@ struct Actor: Codable {
     }
 }
 
-enum Login: String, Codable {
-    case obtusa07 = "obtusa07"
-}
-
 // MARK: - Payload
 struct Payload: Codable {
     let repositoryID, pushID, size, distinctSize: Int?
-    let ref: MasterBranch?
+    let ref: String?
     let head, before: String?
     let commits: [Commit]?
     let refType: String?
-    let masterBranch: MasterBranch?
+    let masterBranch: String?
     let description, pusherType, action: String?
     let issue: Issue?
 
@@ -79,18 +75,8 @@ struct Commit: Codable {
 
 // MARK: - Author
 struct Author: Codable {
-    let email: Email
-    let name: AuthorName
-}
-
-enum Email: String, Codable {
-    case obtusa07GmailCOM = "obtusa07@gmail.com"
-    case the47441965Obtusa07UsersNoreplyGithubCOM = "47441965+obtusa07@users.noreply.github.com"
-}
-
-enum AuthorName: String, Codable {
-    case taehwanKim = "Taehwan Kim"
-    case taehwanKimKen = "Taehwan Kim (Ken)"
+    let email: String
+    let name: String
 }
 
 // MARK: - Issue
@@ -106,17 +92,11 @@ struct Issue: Codable {
     let labels: [Label]
     let state: String
     let locked: Bool
-    let assignee: JSONNull?
-    let assignees: [JSONAny]
-    let milestone: JSONNull?
     let comments: Int
     let createdAt, updatedAt: Date
-    let closedAt: JSONNull?
     let authorAssociation: String
-    let activeLockReason, body: JSONNull?
     let reactions: Reactions
     let timelineURL: String
-    let performedViaGithubApp, stateReason: JSONNull?
 
     enum CodingKeys: String, CodingKey {
         case url
@@ -127,16 +107,12 @@ struct Issue: Codable {
         case htmlURL = "html_url"
         case id
         case nodeID = "node_id"
-        case number, title, user, labels, state, locked, assignee, assignees, milestone, comments
+        case number, title, user, labels, state, locked, comments
         case createdAt = "created_at"
         case updatedAt = "updated_at"
-        case closedAt = "closed_at"
         case authorAssociation = "author_association"
-        case activeLockReason = "active_lock_reason"
-        case body, reactions
+        case reactions
         case timelineURL = "timeline_url"
-        case performedViaGithubApp = "performed_via_github_app"
-        case stateReason = "state_reason"
     }
 }
 
@@ -176,7 +152,6 @@ struct Reactions: Codable {
 
 // MARK: - User
 struct User: Codable {
-    let login: Login
     let id: Int
     let nodeID: String
     let avatarURL: String
@@ -190,7 +165,7 @@ struct User: Codable {
     let siteAdmin: Bool
 
     enum CodingKeys: String, CodingKey {
-        case login, id
+        case id
         case nodeID = "node_id"
         case avatarURL = "avatar_url"
         case gravatarID = "gravatar_id"
@@ -210,29 +185,11 @@ struct User: Codable {
     }
 }
 
-enum MasterBranch: String, Codable {
-    case main = "main"
-    case refsHeadsMain = "refs/heads/main"
-}
-
 // MARK: - Repo
 struct Repo: Codable {
     let id: Int
-    let name: RepoName
+    let name: String
     let url: String
-}
-
-enum RepoName: String, Codable {
-    case obtusa07Algorithm = "obtusa07/algorithm"
-    case obtusa07CommitKing = "obtusa07/CommitKing"
-    case obtusa07GithubPractice = "obtusa07/githubPractice"
-    case obtusa07IOSInterview = "obtusa07/iOSInterview"
-}
-
-enum TypeEnum: String, Codable {
-    case createEvent = "CreateEvent"
-    case issuesEvent = "IssuesEvent"
-    case pushEvent = "PushEvent"
 }
 
 typealias GithubEventConfig = [GithubEventConfigElement]

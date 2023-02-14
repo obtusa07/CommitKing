@@ -153,11 +153,46 @@ class GithubAPIManager {
             }
         }.resume()
     }
+    struct CommitSearchResponse: Codable {
+        let totalCount: Int
+
+        enum CodingKeys: String, CodingKey {
+            case totalCount = "total_count"
+        }
+    }
+    
+    static func getgetgetTemp(username: String, days: Int, completion: @escaping (Int?, Error?) -> Void) {
+        let date = Date()
+//        let dateFormatter = ISO8601DateFormatter()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+//        let dateString = dateFormatter.string(from: date.addingTimeInterval(-Double(days) * 24 * 60 * 60))
+        let dateString = dateFormatter.string(from: date.addingTimeInterval(-Double(1) * 24 * 60 * 60))
+        print(dateString)
+        let url = URL(string: "https://api.github.com/search/commits?q=author:\(username)+committer-date:\(dateString)..\(dateString)")!
+        print(url)
+        let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
+            guard let data = data else {
+                completion(nil, error)
+                return
+            }
+            
+            do {
+                let response = try JSONDecoder().decode(CommitSearchResponse.self, from: data)
+                let count = response.totalCount
+                completion(count, nil)
+            } catch let error {
+                completion(nil, error)
+            }
+        }
+        
+        task.resume()
+    }
     
     static func totalCommits(username: String) {
         // Specify the user
         let user = username
-
+        
 
         // Specify the time range
         let now = Date()
@@ -166,17 +201,19 @@ class GithubAPIManager {
         let timeRange = DateInterval(start: Calendar.current.date(byAdding: .day, value: -7, to: now)!, end: now)
 
         // Build the API endpoint URL
-        let endpoint = "https://api.github.com/users/\(user)/events/public?per_page=100&"
+        let endpoint = "https://api.github.com/users/\(user)/events/public"
+        let token = findTokenInKeychain()
         
-        
-        let since = "since=\(dateFormatter.string(from: timeRange.start))"
-        let until = "until=\(dateFormatter.string(from: timeRange.end))"
-        print(endpoint + since + "&" + until)
-        let url = URL(string: endpoint + since + "&" + until)!
-
+//        let since = "since=\(dateFormatter.string(from: timeRange.start))"
+//        let until = "until=\(dateFormatter.string(from: timeRange.end))"
+//        print(endpoint + since + "&" + until)
+//        let url = URL(string: endpoint + since + "&" + until)!
+        let url = URL(string: endpoint)!
         // Send the API request
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
+        request.addValue("application/vnd.github+json", forHTTPHeaderField: "Accept")
+        request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         URLSession.shared.dataTask(with: request) { data, response, error in
             guard let data = data,
                 let response = response as? HTTPURLResponse,
@@ -192,12 +229,16 @@ class GithubAPIManager {
 
             // Parse the JSON response
             do {
-                let json = try JSONSerialization.jsonObject(with: data, options: []) as! [[String: Any]]
-
-                // Filter for push events and extract the commits made by the user
-                var commits = [[String:Any]]()
-                for event in json {
-                    print(event)
+                let decoder = JSONDecoder()
+                let result = try decoder.decode(GithubEventConfig.self, from: data)
+                print(result)
+                
+//                let json = try JSONSerialization.jsonObject(with: data, options: []) as! [[String: Any]]
+//
+//                // Filter for push events and extract the commits made by the user
+//                var commits = [[String:Any]]()
+//                for event in json {
+//                    print(event)
 //                    guard let eventType = event["type"] as? String, eventType == "PushEvent",
 //                          let actor = event["actor"] as? [String: Any],
 //                          let actorName = actor["login"] as? String,
@@ -220,14 +261,15 @@ class GithubAPIManager {
 //                        commits.append(commit)
 ////                        commits.append(commit["sha"] as! String)
 //                    }
-                }
-                print("Total commits in the past week: \(commits.count)")
+                    
+//                print("Total commits in the past week: \(commits.count)")
             } catch {
                 print("Error: \(error.localizedDescription)")
             }
         }.resume()
 
     }
+
     static func logout() {
         // MARK: Keychain "TokenService"의 Token 데이터 삭제, UserDefaults의 토글 false
         let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
