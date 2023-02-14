@@ -154,6 +154,80 @@ class GithubAPIManager {
         }.resume()
     }
     
+    static func totalCommits(username: String) {
+        // Specify the user
+        let user = username
+
+
+        // Specify the time range
+        let now = Date()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let timeRange = DateInterval(start: Calendar.current.date(byAdding: .day, value: -7, to: now)!, end: now)
+
+        // Build the API endpoint URL
+        let endpoint = "https://api.github.com/users/\(user)/events/public?per_page=100&"
+        
+        
+        let since = "since=\(dateFormatter.string(from: timeRange.start))"
+        let until = "until=\(dateFormatter.string(from: timeRange.end))"
+        print(endpoint + since + "&" + until)
+        let url = URL(string: endpoint + since + "&" + until)!
+
+        // Send the API request
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let data = data,
+                let response = response as? HTTPURLResponse,
+                error == nil else {
+                print("Error: \(error?.localizedDescription ?? "Unknown error")")
+                return
+            }
+
+            guard response.statusCode == 200 else {
+                print("Error: HTTP status code \(response.statusCode)")
+                return
+            }
+
+            // Parse the JSON response
+            do {
+                let json = try JSONSerialization.jsonObject(with: data, options: []) as! [[String: Any]]
+
+                // Filter for push events and extract the commits made by the user
+                var commits = [[String:Any]]()
+                for event in json {
+                    print(event)
+//                    guard let eventType = event["type"] as? String, eventType == "PushEvent",
+//                          let actor = event["actor"] as? [String: Any],
+//                          let actorName = actor["login"] as? String,
+//                          actorName == user,
+//                          let payload = event["payload"] as? [String: Any],
+//                          let commitList = payload["commits"] as? [[String: Any]] else {
+//                        continue
+//                    }
+//                    guard let eventType = event["type"] as? String, eventType == "PushEvent",
+//                          let payload = event["payload"] as? [String: Any],
+//                          let createdAt = event["created_at"] as? String,
+//                          let commitList = payload["commits"] else {
+//                        continue
+//                    }
+//                    print(type(of: commitList))
+//                    print(commitList)
+//                    print(commitList)
+//                    for commit in commitList {
+////                        print(commit["cre"])
+//                        commits.append(commit)
+////                        commits.append(commit["sha"] as! String)
+//                    }
+                }
+                print("Total commits in the past week: \(commits.count)")
+            } catch {
+                print("Error: \(error.localizedDescription)")
+            }
+        }.resume()
+
+    }
     static func logout() {
         // MARK: Keychain "TokenService"의 Token 데이터 삭제, UserDefaults의 토글 false
         let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
