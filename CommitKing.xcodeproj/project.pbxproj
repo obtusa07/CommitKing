@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		7B012200299A52DB00D72245 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B0121FF299A52DB00D72245 /* MainViewController.swift */; };
-		7B012204299B61D200D72245 /* GithubEventConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B012203299B61D200D72245 /* GithubEventConfig.swift */; };
+		7B012204299B61D200D72245 /* GithubCommitsConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B012203299B61D200D72245 /* GithubCommitsConfig.swift */; };
 		7B49B15429977C4100EFD4D7 /* GithubConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B49B15329977C4100EFD4D7 /* GithubConfig.swift */; };
 		7BC7305F298E7C10002DA095 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BC7305E298E7C10002DA095 /* AppDelegate.swift */; };
 		7BC73061298E7C10002DA095 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BC73060298E7C10002DA095 /* SceneDelegate.swift */; };
@@ -20,7 +20,7 @@
 
 /* Begin PBXFileReference section */
 		7B0121FF299A52DB00D72245 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
-		7B012203299B61D200D72245 /* GithubEventConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GithubEventConfig.swift; sourceTree = "<group>"; };
+		7B012203299B61D200D72245 /* GithubCommitsConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GithubCommitsConfig.swift; sourceTree = "<group>"; };
 		7B49B15329977C4100EFD4D7 /* GithubConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GithubConfig.swift; sourceTree = "<group>"; };
 		7BC7305B298E7C10002DA095 /* CommitKing.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CommitKing.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7BC7305E298E7C10002DA095 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -87,7 +87,7 @@
 				7BC7307B298F8308002DA095 /* GithubAPIManager.swift */,
 				7B49B15329977C4100EFD4D7 /* GithubConfig.swift */,
 				7BC7306C298E7C11002DA095 /* Info.plist */,
-				7B012203299B61D200D72245 /* GithubEventConfig.swift */,
+				7B012203299B61D200D72245 /* GithubCommitsConfig.swift */,
 			);
 			path = CommitKing;
 			sourceTree = "<group>";
@@ -164,7 +164,7 @@
 			files = (
 				7BC73063298E7C10002DA095 /* LoginViewController.swift in Sources */,
 				7BC7307C298F8308002DA095 /* GithubAPIManager.swift in Sources */,
-				7B012204299B61D200D72245 /* GithubEventConfig.swift in Sources */,
+				7B012204299B61D200D72245 /* GithubCommitsConfig.swift in Sources */,
 				7B49B15429977C4100EFD4D7 /* GithubConfig.swift in Sources */,
 				7B012200299A52DB00D72245 /* MainViewController.swift in Sources */,
 				7BC7305F298E7C10002DA095 /* AppDelegate.swift in Sources */,

@@ -126,6 +126,7 @@ class GithubAPIManager {
         }
         return token
     }
+    
     static func getMyInfo() {
         guard let url = URL(string: GithubUrls.MYINFO) else {
             preconditionFailure("GithubConfig is broken. Fail to load TOKENURL")
@@ -153,123 +154,57 @@ class GithubAPIManager {
             }
         }.resume()
     }
-    struct CommitSearchResponse: Codable {
-        let totalCount: Int
-
-        enum CodingKeys: String, CodingKey {
-            case totalCount = "total_count"
-        }
-    }
     
-    static func getgetgetTemp(username: String, days: Int, completion: @escaping (Int?, Error?) -> Void) {
-        let date = Date()
-//        let dateFormatter = ISO8601DateFormatter()
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-//        let dateString = dateFormatter.string(from: date.addingTimeInterval(-Double(days) * 24 * 60 * 60))
-        let dateString = dateFormatter.string(from: date.addingTimeInterval(-Double(1) * 24 * 60 * 60))
-        print(dateString)
-        let url = URL(string: "https://api.github.com/search/commits?q=author:\(username)+committer-date:\(dateString)..\(dateString)")!
-        print(url)
-        let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
-            guard let data = data else {
-                completion(nil, error)
-                return
-            }
-            
-            do {
-                let response = try JSONDecoder().decode(CommitSearchResponse.self, from: data)
-                let count = response.totalCount
-                completion(count, nil)
-            } catch let error {
-                completion(nil, error)
-            }
+    static func totalCommits(username: String, days: Int, completion: @escaping (Int?, Error?) -> Void) {
+        // MARK: days로 0이 들어가면 오늘 날짜, days가 음수면 Error
+        if days < 0 {
+            preconditionFailure("Days must be natural number (0 or positive integer)")
         }
-        
-        task.resume()
-    }
-    
-    static func totalCommits(username: String) {
-        // Specify the user
-        let user = username
-        
-
-        // Specify the time range
         let now = Date()
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
-        let timeRange = DateInterval(start: Calendar.current.date(byAdding: .day, value: -7, to: now)!, end: now)
-
-        // Build the API endpoint URL
-        let endpoint = "https://api.github.com/users/\(user)/events/public"
-        let token = findTokenInKeychain()
         
-//        let since = "since=\(dateFormatter.string(from: timeRange.start))"
-//        let until = "until=\(dateFormatter.string(from: timeRange.end))"
-//        print(endpoint + since + "&" + until)
-//        let url = URL(string: endpoint + since + "&" + until)!
-        let url = URL(string: endpoint)!
-        // Send the API request
+        // MARK: timeRange로 기간을 산정함
+        let timeRange = DateInterval(start: Calendar.current.date(byAdding: .day, value: -days, to: now)!,
+                                     end: now)
+        let since = dateFormatter.string(from: timeRange.start)
+        let until = dateFormatter.string(from: timeRange.end)
+        
+        guard var components = URLComponents(string: GithubConfig.COMMITURL) else {
+            preconditionFailure("GithubConfig is broken. Fail to load CODEURL")
+        }
+        components.queryItems = [
+            URLQueryItem(name: "q", value: "author:\(username)+committer-date:\(since)..\(until)")
+        ]
+        guard let url = components.url else {
+            preconditionFailure("GithubConfig is broken. Fail to make URL")
+        }
+        
+        let token = findTokenInKeychain()
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         request.addValue("application/vnd.github+json", forHTTPHeaderField: "Accept")
         request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-        URLSession.shared.dataTask(with: request) { data, response, error in
-            guard let data = data,
-                let response = response as? HTTPURLResponse,
-                error == nil else {
-                print("Error: \(error?.localizedDescription ?? "Unknown error")")
-                return
+        
+        let configuration = URLSessionConfiguration.default
+        URLSession(configuration: configuration).dataTask(with: request) { (data, response, error) in
+            guard let response = response as? HTTPURLResponse, (200..<300).contains(response.statusCode) else {
+                preconditionFailure("Failed to receive Token response \(String(describing: response))")
             }
-
-            guard response.statusCode == 200 else {
-                print("Error: HTTP status code \(response.statusCode)")
-                return
+            guard let data = data else {
+                preconditionFailure("Failed to receive Token Data")
             }
-
-            // Parse the JSON response
             do {
                 let decoder = JSONDecoder()
-                let result = try decoder.decode(GithubEventConfig.self, from: data)
-                print(result)
-                
-//                let json = try JSONSerialization.jsonObject(with: data, options: []) as! [[String: Any]]
-//
-//                // Filter for push events and extract the commits made by the user
-//                var commits = [[String:Any]]()
-//                for event in json {
-//                    print(event)
-//                    guard let eventType = event["type"] as? String, eventType == "PushEvent",
-//                          let actor = event["actor"] as? [String: Any],
-//                          let actorName = actor["login"] as? String,
-//                          actorName == user,
-//                          let payload = event["payload"] as? [String: Any],
-//                          let commitList = payload["commits"] as? [[String: Any]] else {
-//                        continue
-//                    }
-//                    guard let eventType = event["type"] as? String, eventType == "PushEvent",
-//                          let payload = event["payload"] as? [String: Any],
-//                          let createdAt = event["created_at"] as? String,
-//                          let commitList = payload["commits"] else {
-//                        continue
-//                    }
-//                    print(type(of: commitList))
-//                    print(commitList)
-//                    print(commitList)
-//                    for commit in commitList {
-////                        print(commit["cre"])
-//                        commits.append(commit)
-////                        commits.append(commit["sha"] as! String)
-//                    }
-                    
-//                print("Total commits in the past week: \(commits.count)")
-            } catch {
-                print("Error: \(error.localizedDescription)")
+                let result = try decoder.decode(GithubCommitsConfig.self, from: data)
+                let count = result.totalCount
+                completion(count, nil)
+            } catch let error {
+                completion(nil, error)
             }
         }.resume()
-
     }
-
+    
     static func logout() {
         // MARK: Keychain "TokenService"의 Token 데이터 삭제, UserDefaults의 토글 false
         let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
