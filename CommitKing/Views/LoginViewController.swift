@@ -40,10 +40,18 @@ class LoginViewController: UIViewController {
         ])
     }
     private func buttonAction() {
-        loginButton.addAction(loginAction, for: .touchUpInside)
+//        loginButton.addAction(loginAction, for: .touchUpInside)
+        loginButton.addTarget(self, action: #selector(goHome), for: .touchUpInside)
+    }
+    @objc private func goHome() {
+        GithubAPIManager.loginButtonClicked()
+        let viewController = MainViewController()
+        viewController.modalPresentationStyle = .fullScreen
+        self.present(viewController, animated: true, completion: nil)
     }
     
-    let loginAction = UIAction { _ in
+    // MARK: - UIAction에서 Present를 하는 방법이 잘 모르겠다. 일단 임시로 addTarget으로 처리
+    private let loginAction = UIAction { _ in
         GithubAPIManager.loginButtonClicked()
     }
     
