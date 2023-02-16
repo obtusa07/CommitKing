@@ -8,10 +8,10 @@ Github API를 이용하여 사용자의 코딩 활동기록을 관리하고 iOS 
 - KeyChain
 
 
-사용된 깃모지 양식
+### 사용된 깃모지 양식
 - https://gitmoji.dev
 
-
-
-
+### API 가이드라인
 - https://www.swift.org/documentation/api-design-guidelines/
+
+
