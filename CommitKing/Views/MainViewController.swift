@@ -8,7 +8,11 @@
 import UIKit
 
 class MainViewController: UIViewController {
-    
+    private lazy var userImage: UIImageView = {
+        let imageV = UIImageView()
+        imageV.imageDownload(urlString: "https://avatars.githubusercontent.com/u/47441965?v=4", contentMode: .scaleToFill)
+        return imageV
+    }()
     private let getUserInfomationButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .gray
@@ -41,9 +45,11 @@ class MainViewController: UIViewController {
         view.addSubview(getUserInfomationButton)
         view.addSubview(getTotalCommitCountButton)
         view.addSubview(logoutButton)
+        view.addSubview(userImage)
         getUserInfomationButton.translatesAutoresizingMaskIntoConstraints = false
         getTotalCommitCountButton.translatesAutoresizingMaskIntoConstraints = false
         logoutButton.translatesAutoresizingMaskIntoConstraints = false
+        userImage.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             getUserInfomationButton.topAnchor.constraint(equalTo: view.centerYAnchor, constant: -60),
             getUserInfomationButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
@@ -61,6 +67,12 @@ class MainViewController: UIViewController {
             logoutButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
             logoutButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30),
             logoutButton.heightAnchor.constraint(equalToConstant: 50)
+        ])
+        NSLayoutConstraint.activate([
+            userImage.topAnchor.constraint(equalTo: view.centerYAnchor, constant: -250),
+            userImage.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 50),
+            userImage.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -50),
+            userImage.heightAnchor.constraint(equalToConstant: 50)
         ])
     }
     private func buttonAction() {
@@ -83,6 +95,7 @@ class MainViewController: UIViewController {
             }
         }
     }
+    
     // MARK: - Navigation 안 되는 문제로 임시로 goLogin 메서드로 대체해서 화면 이동중
     let logoutAction = UIAction { _ in
         GithubAPIManager.logout()
@@ -92,6 +105,7 @@ class MainViewController: UIViewController {
         GithubAPIManager.logout()
         let viewController = LoginViewController()
         viewController.modalPresentationStyle = .fullScreen
+        // MAKR: - 이런식으로 사용하면 일부 경우 메모리 dealloc을 못 하는 문제 발생하지 않을까?
         self.present(viewController, animated: true, completion: nil)
     }
 }
