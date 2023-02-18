@@ -6,7 +6,7 @@ Github API를 이용하여 사용자의 코딩 활동기록을 관리하고 iOS 
 - REST API
 - URLSession
 - KeyChain
-
+- NSCache
 
 ### 사용된 깃모지 양식
 - https://gitmoji.dev
