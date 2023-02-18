@@ -9,5 +9,4 @@ import UIKit
 
 class Cache {
     static let imageCache = NSCache<NSString, UIImage>()
-    
 }

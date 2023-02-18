@@ -11,6 +11,7 @@ import UIKit
 extension UIImageView {
     
     /// image를 다운받는 extension
+    /// Cache 처리를 내장하고 있다.
     /// - Parameters:
     ///   - url: avatarURL 혹은 gravatarID 중 하나를 사용한다. 둘다 받아서 avatar가 nil이면 gravatar를 사용하는 방법도 있다.
     //
