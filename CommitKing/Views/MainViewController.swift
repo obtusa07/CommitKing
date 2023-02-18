@@ -9,9 +9,10 @@ import UIKit
 
 class MainViewController: UIViewController {
     private lazy var userImage: UIImageView = {
-        let imageV = UIImageView()
-        imageV.imageDownload(urlString: "https://avatars.githubusercontent.com/u/47441965?v=4", contentMode: .scaleToFill)
-        return imageV
+        let imageView = UIImageView()
+        // TODO: 하드 코딩 되어 있는 유저 정보를 로그인 단계에서 뽑아와서 하는 방식으로 바꿀 것
+        imageView.imageDownload(urlString: "https://avatars.githubusercontent.com/u/47441965?v=4", contentMode: .scaleToFill)
+        return imageView
     }()
     private let getUserInfomationButton: UIButton = {
         let button = UIButton()

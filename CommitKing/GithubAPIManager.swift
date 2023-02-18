@@ -43,7 +43,7 @@ class GithubAPIManager {
             preconditionFailure("Cant't separeated state")
         }
         
-        // MARK: --"state" string prevent "cross site request forgery(CSRF)" attack
+        // MARK: - "state" string prevent "cross site request forgery(CSRF)" attack
         let original = UserDefaults.standard.string(forKey: "LoginCodeState")
         if original != state {
             fatalError("CSRF 공격이 감지되었습니다.")
@@ -128,6 +128,8 @@ class GithubAPIManager {
     }
     
     static func getMyInfo() {
+        // TODO: getMyInfo는 로그인할 때 수행하고 화면에 반영하는 것까지 완료한 상태에서 다음 화면으로 가게 만들기
+        
         guard let url = URL(string: GithubUrls.MYINFO) else {
             preconditionFailure("GithubConfig is broken. Fail to load TOKENURL")
         }
@@ -148,6 +150,7 @@ class GithubAPIManager {
             do {
                 let decoder = JSONDecoder()
                 let result = try decoder.decode(GithubMyInfo.self, from: data)
+                // TODO: - 여기서 유저 정보를 UserDefaults로 넣어서 관리
                 print(result)
             } catch {
                 preconditionFailure("Can't decode Token json Data")
