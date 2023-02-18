@@ -11,7 +11,6 @@ import UIKit
 
 class GithubAPIManager {
 //    static let shared = GithubAPIManager()
-    
     static func loginButtonClicked() {
         let uuid = UUID().uuidString
         print("오리지널 uuid: \(uuid)")
@@ -19,9 +18,9 @@ class GithubAPIManager {
             preconditionFailure("GithubConfig is broken. Fail to load CODEURL")
         }
         components.queryItems = [
-            URLQueryItem(name: "client_id", value: GithubConfig.CLIENT_ID),
+            URLQueryItem(name: "client_id", value: GithubConfig.CLIENTID),
             URLQueryItem(name: "scope", value: GithubConfig.SCOPE),
-            URLQueryItem(name: "redirect_uri", value: GithubConfig.REDIRECT_URI_LOGIN),
+            URLQueryItem(name: "redirect_uri", value: GithubConfig.REDIRECTURILOGIN),
             URLQueryItem(name: "state", value: uuid)
         ]
         guard let url = components.url else {
@@ -30,7 +29,6 @@ class GithubAPIManager {
         UserDefaults.standard.set(uuid, forKey: "LoginCodeState")
         UIApplication.shared.open(url)
     }
-    
     // MARK: URL을 Scene에서 받아서 POST로 보내고 Token 받아오는 메서드
     static func tokenGenerate(url: URL) {
         guard let codeAndState = url.absoluteString.components(separatedBy: "code=").last else {
@@ -42,32 +40,29 @@ class GithubAPIManager {
         guard let state = codeAndState.components(separatedBy: "&state=").last else {
             preconditionFailure("Cant't separeated state")
         }
-        
         // MARK: - "state" string prevent "cross site request forgery(CSRF)" attack
         let original = UserDefaults.standard.string(forKey: "LoginCodeState")
         if original != state {
             fatalError("CSRF 공격이 감지되었습니다.")
         }
         UserDefaults.standard.removeObject(forKey: "LoginCodeState")
-        
-        
-        let param = ["client_id": GithubConfig.CLIENT_ID, "client_secret": GithubConfig.CLIENT_SECRET,
-                     "code": code, "redirect_uri":GithubConfig.REDIRECT_URI_LOGIN]
-        let paramData = try! JSONSerialization.data(withJSONObject: param, options: [])
-
+        let param = ["client_id": GithubConfig.CLIENTID, "client_secret": GithubConfig.CLIENTSECRET,
+                     "code": code, "redirect_uri": GithubConfig.REDIRECTURILOGIN]
+        let paramData = try? JSONSerialization.data(withJSONObject: param, options: [])
         guard let url = URL(string: GithubConfig.TOKENURL) else {
             preconditionFailure("GithubConfig is broken. Fail to load TOKENURL")
         }
-        
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
+        guard let paramData = paramData else {
+            preconditionFailure("make paramData is failed")
+        }
         request.httpBody = paramData
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         request.setValue(String(paramData.count), forHTTPHeaderField: "Content-Length")
         let configuration = URLSessionConfiguration.ephemeral // Code는 Credential이라 판단
-
-        URLSession(configuration: configuration).dataTask(with: request) { data, response, error in
+        URLSession(configuration: configuration).dataTask(with: request) { data, response, _ in
             guard let response = response as? HTTPURLResponse, (200..<300).contains(response.statusCode) else {
                 preconditionFailure("Failed to receive Token response \(String(describing: response))")
             }
@@ -84,7 +79,6 @@ class GithubAPIManager {
             }
         }.resume()
     }
-    
     static func saveTokenInKeychain(token: GithubToken) {
         let tokenData = token.accessToken.data(using: .utf8)
         let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
@@ -102,7 +96,6 @@ class GithubAPIManager {
             }
         }
     }
-    
     static func findTokenInKeychain() -> String {
         let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
                                 kSecAttrService as String: Bundle.main.bundleIdentifier!,
@@ -119,17 +112,15 @@ class GithubAPIManager {
                 print(error)
             }
         }
-        guard let existingItem = item as? [String : Any],
+        guard let existingItem = item as? [String: Any],
               let tokenData = existingItem[kSecValueData as String] as? Data,
               let token = String(data: tokenData, encoding: String.Encoding.utf8) else {
             preconditionFailure("Failed to load token data to Keychain")
         }
         return token
     }
-    
     static func getMyInfo() {
         // TODO: getMyInfo는 로그인할 때 수행하고 화면에 반영하는 것까지 완료한 상태에서 다음 화면으로 가게 만들기
-        
         guard let url = URL(string: GithubUrls.MYINFO) else {
             preconditionFailure("GithubConfig is broken. Fail to load TOKENURL")
         }
@@ -139,8 +130,7 @@ class GithubAPIManager {
         request.addValue("application/vnd.github+json", forHTTPHeaderField: "Accept")
         request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         let configuration = URLSessionConfiguration.default
-        
-        URLSession(configuration: configuration).dataTask(with: request) { data, response, error in
+        URLSession(configuration: configuration).dataTask(with: request) { data, response, _ in
             guard let response = response as? HTTPURLResponse, (200..<300).contains(response.statusCode) else {
                 preconditionFailure("Failed to receive Token response \(String(describing: response))")
             }
@@ -157,7 +147,6 @@ class GithubAPIManager {
             }
         }.resume()
     }
-    
     static func totalCommits(username: String, days: Int, completion: @escaping (Int?, Error?) -> Void) {
         // MARK: days로 0이 들어가면 오늘 날짜, days가 음수면 Error
         if days < 0 {
@@ -166,13 +155,11 @@ class GithubAPIManager {
         let now = Date()
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
-        
         // MARK: timeRange로 기간을 산정함
         let timeRange = DateInterval(start: Calendar.current.date(byAdding: .day, value: -days, to: now)!,
                                      end: now)
         let since = dateFormatter.string(from: timeRange.start)
         let until = dateFormatter.string(from: timeRange.end)
-        
         guard var components = URLComponents(string: GithubConfig.COMMITURL) else {
             preconditionFailure("GithubConfig is broken. Fail to load CODEURL")
         }
@@ -182,13 +169,11 @@ class GithubAPIManager {
         guard let url = components.url else {
             preconditionFailure("GithubConfig is broken. Fail to make URL")
         }
-        
         let token = findTokenInKeychain()
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         request.addValue("application/vnd.github+json", forHTTPHeaderField: "Accept")
         request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-        
         let configuration = URLSessionConfiguration.default
         URLSession(configuration: configuration).dataTask(with: request) { (data, response, error) in
             guard let response = response as? HTTPURLResponse, (200..<300).contains(response.statusCode) else {
@@ -207,7 +192,6 @@ class GithubAPIManager {
             }
         }.resume()
     }
-    
     static func logout() {
         // MARK: Keychain "TokenService"의 Token 데이터 삭제, UserDefaults의 토글 false
         let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
@@ -225,7 +209,6 @@ class GithubAPIManager {
         }
     }
 }
-
 
 /*
  json 뽑아서 보는 용도 테스트 코드

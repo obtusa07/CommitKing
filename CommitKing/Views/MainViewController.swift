@@ -40,7 +40,6 @@ class MainViewController: UIViewController {
         setupUI()
         buttonAction()
     }
-    
     func setupUI() {
         view.backgroundColor = .white
         view.addSubview(getUserInfomationButton)
@@ -82,7 +81,6 @@ class MainViewController: UIViewController {
 //        logoutButton.addAction(logoutAction, for: .touchUpInside)
         logoutButton.addTarget(self, action: #selector(goLogin), for: .touchUpInside)
     }
-    
     let getUserAction = UIAction { _ in
         GithubAPIManager.getMyInfo()
     }
@@ -96,12 +94,10 @@ class MainViewController: UIViewController {
             }
         }
     }
-    
     // MARK: - Navigation 안 되는 문제로 임시로 goLogin 메서드로 대체해서 화면 이동중
     let logoutAction = UIAction { _ in
         GithubAPIManager.logout()
     }
-    
     @objc private func goLogin() {
         GithubAPIManager.logout()
         let viewController = LoginViewController()
