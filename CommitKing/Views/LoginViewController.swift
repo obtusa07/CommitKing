@@ -22,17 +22,17 @@ class LoginViewController: UIViewController {
         // configuration의 치명적인 단점은 버튼에 적합한 사이즈의 이미지를 리사이징 하는 기능이 없다는 것이다.
         // WWDC 2018에서 추천한 UIGraphicsImageRenderer을 이용하여 문제 해결 시도하겠음
         var configuration = UIButton.Configuration.filled()
-//        configuration.image = UIImage(named: "github-mark")
-//        configuration.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(pointSize: 35)
-//        configuration.contentInsets = NSDirectionalEdgeInsets(top: 20, leading: 20, bottom: 20, trailing: 20)
-//        configuration.imagePlacement = .leading
-//        configuration.imagePadding = 5
-//        configuration.contentInsets = NSDirectionalEdgeInsets(top: 2, leading: 2, bottom: 2, trailing: 2)
+        configuration.image = UIImage(named: "github-button")
+        configuration.imagePlacement = .leading
         configuration.title = "Github으로 로그인"
-        configuration.baseBackgroundColor = .black
-        configuration.baseForegroundColor = .white
-        configuration.cornerStyle = .dynamic
+        configuration.imagePadding = -10
+        configuration.baseBackgroundColor = .white
+        configuration.baseForegroundColor = .githubBlack
+//        configuration.cornerStyle = .dynamic
         let button = UIButton(configuration: configuration)
+        button.layer.cornerRadius = 15
+        button.layer.borderWidth = 1
+        button.layer.borderColor = UIColor.githubBlack.cgColor
         return button
     }()
     override func viewDidLoad() {
@@ -42,12 +42,13 @@ class LoginViewController: UIViewController {
     }
     private func setupUI() {
         // MARK: - View 세팅
-        view.backgroundColor = .white
+        view.backgroundColor = .loginWhite
         // MARK: - LoginButton 세팅
         view.addSubview(loginButton)
         view.addSubview(loginCodingImageView)
         loginCodingImageView.translatesAutoresizingMaskIntoConstraints = false
         loginButton.translatesAutoresizingMaskIntoConstraints = false
+        loginButton.imageView?.translatesAutoresizingMaskIntoConstraints = false // 이걸로
         NSLayoutConstraint.activate([
             loginCodingImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 30),
             loginCodingImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
@@ -56,11 +57,17 @@ class LoginViewController: UIViewController {
         ])
         NSLayoutConstraint.activate([
             loginButton.topAnchor.constraint(equalTo: loginCodingImageView.bottomAnchor, constant: 30),
-            loginButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
-            loginButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30),
-            loginButton.heightAnchor.constraint(equalToConstant: 50)
+            loginButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 50),
+            loginButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -50),
+            loginButton.heightAnchor.constraint(equalToConstant: 58)
         ])
-    }
+        NSLayoutConstraint.activate([
+//            loginButton.imageView!.bottomAnchor.constraint(equalTo: loginButton.bottomAnchor),
+            loginButton.imageView!.topAnchor.constraint(equalTo: loginButton.topAnchor, constant: 4),
+            loginButton.imageView!.leadingAnchor.constraint(equalTo: loginButton.leadingAnchor, constant: 10)
+//            loginButton.imageView!.trailingAnchor.constraint(equalTo: loginButton.imageView!.leadingAnchor, constant: 50)
+        ])
+        }
     private func buttonAction() {
 //        loginButton.addAction(loginAction, for: .touchUpInside)
         loginButton.addTarget(self, action: #selector(goHome), for: .touchUpInside)
