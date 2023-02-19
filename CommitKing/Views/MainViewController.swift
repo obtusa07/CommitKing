@@ -42,10 +42,7 @@ class MainViewController: UIViewController {
     }
     func setupUI() {
         view.backgroundColor = .white
-        view.addSubview(getUserInfomationButton)
-        view.addSubview(getTotalCommitCountButton)
-        view.addSubview(logoutButton)
-        view.addSubview(userImage)
+        view.addSubviews(subviews: getUserInfomationButton, getTotalCommitCountButton, logoutButton, userImage)
         getUserInfomationButton.translatesAutoresizingMaskIntoConstraints = false
         getTotalCommitCountButton.translatesAutoresizingMaskIntoConstraints = false
         logoutButton.translatesAutoresizingMaskIntoConstraints = false

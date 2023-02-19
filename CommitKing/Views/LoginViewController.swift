@@ -44,8 +44,7 @@ class LoginViewController: UIViewController {
         // MARK: - View 세팅
         view.backgroundColor = .loginWhite
         // MARK: - LoginButton 세팅
-        view.addSubview(loginButton)
-        view.addSubview(loginCodingImageView)
+        view.addSubviews(subviews: loginButton, loginCodingImageView)
         loginCodingImageView.translatesAutoresizingMaskIntoConstraints = false
         loginButton.translatesAutoresizingMaskIntoConstraints = false
         loginButton.imageView?.translatesAutoresizingMaskIntoConstraints = false // 이걸로
