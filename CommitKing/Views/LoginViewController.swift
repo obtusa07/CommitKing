@@ -22,11 +22,13 @@ class LoginViewController: UIViewController {
         // configuration의 치명적인 단점은 버튼에 적합한 사이즈의 이미지를 리사이징 하는 기능이 없다는 것이다.
         // WWDC 2018에서 추천한 UIGraphicsImageRenderer을 이용하여 문제 해결 시도하겠음
         var configuration = UIButton.Configuration.filled()
-        configuration.image = UIImage(named: "github-mark")
-        configuration.imagePlacement = .leading
-        configuration.imagePadding = 5
-        configuration.contentInsets = NSDirectionalEdgeInsets(top: 2, leading: 2, bottom: 2, trailing: 2)
-        configuration.title = "github 로그인"
+//        configuration.image = UIImage(named: "github-mark")
+//        configuration.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(pointSize: 35)
+//        configuration.contentInsets = NSDirectionalEdgeInsets(top: 20, leading: 20, bottom: 20, trailing: 20)
+//        configuration.imagePlacement = .leading
+//        configuration.imagePadding = 5
+//        configuration.contentInsets = NSDirectionalEdgeInsets(top: 2, leading: 2, bottom: 2, trailing: 2)
+        configuration.title = "Github으로 로그인"
         configuration.baseBackgroundColor = .black
         configuration.baseForegroundColor = .white
         configuration.cornerStyle = .dynamic
