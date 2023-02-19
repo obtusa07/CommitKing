@@ -47,7 +47,7 @@ class LoginViewController: UIViewController {
         view.addSubviews(subviews: loginButton, loginCodingImageView)
         loginCodingImageView.translatesAutoresizingMaskIntoConstraints = false
         loginButton.translatesAutoresizingMaskIntoConstraints = false
-        loginButton.imageView?.translatesAutoresizingMaskIntoConstraints = false // 이걸로
+        loginButton.imageView?.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             loginCodingImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 30),
             loginCodingImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
