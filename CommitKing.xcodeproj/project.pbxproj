@@ -64,7 +64,6 @@
 		7B012201299A530D00D72245 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				7BC73069298E7C11002DA095 /* LaunchScreen.storyboard */,
 				7BC73062298E7C10002DA095 /* LoginViewController.swift */,
 				7B0121FF299A52DB00D72245 /* MainViewController.swift */,
 			);
@@ -75,6 +74,9 @@
 			isa = PBXGroup;
 			children = (
 				7BC73067298E7C11002DA095 /* Assets.xcassets */,
+				7BC73060298E7C10002DA095 /* SceneDelegate.swift */,
+				7BC7305E298E7C10002DA095 /* AppDelegate.swift */,
+				7BC73069298E7C11002DA095 /* LaunchScreen.storyboard */,
 				7B2870FB29A09AB400E00DED /* LoginCodingImage.json */,
 			);
 			path = Resources;
@@ -134,8 +136,6 @@
 				7BA4856D299F2519009BA679 /* Global */,
 				7B012202299A53D000D72245 /* Resources */,
 				7B012201299A530D00D72245 /* Views */,
-				7BC7305E298E7C10002DA095 /* AppDelegate.swift */,
-				7BC73060298E7C10002DA095 /* SceneDelegate.swift */,
 				7BC7307B298F8308002DA095 /* GithubAPIManager.swift */,
 				7BC7306C298E7C11002DA095 /* Info.plist */,
 			);
