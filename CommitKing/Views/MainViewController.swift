@@ -32,7 +32,7 @@ class MainViewController: UIViewController {
         let button = UIButton()
         button.backgroundColor = .gray
         button.tintColor = .white
-        button.setTitle("logout", for: .normal)
+        button.setTitle("Logout", for: .normal)
         return button
     }()
     override func viewDidLoad() {
@@ -42,7 +42,7 @@ class MainViewController: UIViewController {
     }
     func setupUI() {
         view.backgroundColor = .white
-        view.addSubviews(subviews: getUserInfomationButton, getTotalCommitCountButton, logoutButton, userImage)
+        view.addSubviews(getUserInfomationButton, getTotalCommitCountButton, logoutButton, userImage)
         getUserInfomationButton.translatesAutoresizingMaskIntoConstraints = false
         getTotalCommitCountButton.translatesAutoresizingMaskIntoConstraints = false
         logoutButton.translatesAutoresizingMaskIntoConstraints = false
@@ -60,15 +60,15 @@ class MainViewController: UIViewController {
             getTotalCommitCountButton.heightAnchor.constraint(equalToConstant: 50)
         ])
         NSLayoutConstraint.activate([
-            logoutButton.topAnchor.constraint(equalTo: view.centerYAnchor, constant: -180),
-            logoutButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
-            logoutButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30),
+            logoutButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            logoutButton.leadingAnchor.constraint(equalTo: logoutButton.trailingAnchor, constant: -50),
+            logoutButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
             logoutButton.heightAnchor.constraint(equalToConstant: 50)
         ])
         NSLayoutConstraint.activate([
             userImage.topAnchor.constraint(equalTo: view.centerYAnchor, constant: -250),
             userImage.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 50),
-            userImage.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -50),
+            userImage.trailingAnchor.constraint(equalTo: userImage.leadingAnchor, constant: 50),
             userImage.heightAnchor.constraint(equalToConstant: 50)
         ])
     }
