@@ -8,14 +8,17 @@
 import Foundation
 
 struct GithubMyInfo: Codable {
-    let avatarURL: String?
+    let avatarURL: String
     let gravatarID: String?
-    let url, htmlURL, followersURL, followingURL: String?
+    let url, htmlURL, followersURL, followingURL: String
+    let organizationsUrl: String
     let name, company: String?
+    let blog: String?
     let location, email: String?
+    let hireable: String?
     let bio, twitterUsername: String?
-    let publicRepos, publicGists, followers, following: Int?
-    let privateGists, totalPrivateRepos, ownedPrivateRepos, diskUsage: Int?
+    let publicRepos, publicGists, followers, following: Int
+    let privateGists, totalPrivateRepos, ownedPrivateRepos, diskUsage: Int
     enum CodingKeys: String, CodingKey {
         case avatarURL = "avatar_url"
         case gravatarID = "gravatar_id"
@@ -23,10 +26,13 @@ struct GithubMyInfo: Codable {
         case htmlURL = "html_url"
         case followersURL = "followers_url"
         case followingURL = "following_url"
+        case organizationsUrl = "organizations_url"
         case name
         case company
+        case blog
         case location
         case email
+        case hireable
         case bio
         case twitterUsername = "twitter_username"
         case publicRepos = "public_repos"
