@@ -112,6 +112,20 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		7BAFB62529C04DBF009198E1 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		7BAFB62629C04DF8009198E1 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
 		7BC73052298E7C10002DA095 = {
 			isa = PBXGroup;
 			children = (
@@ -132,11 +146,13 @@
 		7BC7305D298E7C10002DA095 /* CommitKing */ = {
 			isa = PBXGroup;
 			children = (
-				7BA48570299F2CCB009BA679 /* Models */,
-				7BA4856D299F2519009BA679 /* Global */,
 				7B012202299A53D000D72245 /* Resources */,
+				7BA4856D299F2519009BA679 /* Global */,
+				7BA48570299F2CCB009BA679 /* Models */,
+				7BAFB62529C04DBF009198E1 /* ViewModels */,
 				7B012201299A530D00D72245 /* Views */,
 				7BC7307B298F8308002DA095 /* GithubAPIManager.swift */,
+				7BAFB62629C04DF8009198E1 /* Controllers */,
 				7BC7306C298E7C11002DA095 /* Info.plist */,
 			);
 			path = CommitKing;
