@@ -15,7 +15,6 @@ struct GithubMyInfo: Codable {
     let name, company: String?
     let blog: String?
     let location, email: String?
-    let hireable: String?
     let bio, twitterUsername: String?
     let publicRepos, publicGists, followers, following: Int
     let privateGists, totalPrivateRepos, ownedPrivateRepos, diskUsage: Int
@@ -32,7 +31,6 @@ struct GithubMyInfo: Codable {
         case blog
         case location
         case email
-        case hireable
         case bio
         case twitterUsername = "twitter_username"
         case publicRepos = "public_repos"

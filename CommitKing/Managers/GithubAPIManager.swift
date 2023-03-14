@@ -133,6 +133,7 @@ class GithubAPIManager {
         request.httpMethod = "GET"
         request.addValue("application/vnd.github+json", forHTTPHeaderField: "Accept")
         request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        
         let configuration = URLSessionConfiguration.default
         URLSession(configuration: configuration).dataTask(with: request) { data, response, _ in
             guard let response = response as? HTTPURLResponse, (200..<300).contains(response.statusCode) else {

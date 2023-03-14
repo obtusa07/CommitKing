@@ -141,6 +141,7 @@ class MainViewController: UIViewController {
     }
     
     let getUserAction = UIAction { _ in
+        // TODO: 이거 유저디폴츠에서 꺼내오는걸로 수정하기
         GithubAPIManager.getMyInfo()
     }
     
