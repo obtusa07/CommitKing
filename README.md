@@ -8,6 +8,12 @@ Github API를 이용하여 사용자의 코딩 활동기록을 관리하고 iOS 
 - KeyChain
 - NSCache
 
+### 진행방식
+1차) MVC, DispatchQueue, Compositional layout <-(현재 디자인 협의중입니다)
+2차) MVVM, Concurrency, DiffableDataSource (고민중)
+3차) 같은 기능을 Combine을 통해 개발
+
+
 ### 사용된 깃모지 양식
 - https://gitmoji.dev
 
@@ -15,4 +21,4 @@ Github API를 이용하여 사용자의 코딩 활동기록을 관리하고 iOS 
 - https://www.swift.org/documentation/api-design-guidelines/
 
 
-### 안드로이드 지원을 위해 개발 대기중
+### 안드로이드는 다른 사람이 작업중에 있습니다.
