@@ -124,10 +124,12 @@ class MainViewController: UIViewController {
             userId.heightAnchor.constraint(equalToConstant: 30),
             userId.bottomAnchor.constraint(equalTo: userImage.bottomAnchor, constant: -10),
             userId.leadingAnchor.constraint(equalTo: userName.leadingAnchor),
-            userId.trailingAnchor.constraint(equalTo: userId.trailingAnchor, constant: 20),
+            userId.trailingAnchor.constraint(equalTo: userId.leadingAnchor, constant: 100),
             
             weekCommit.centerYAnchor.constraint(equalTo: userProfileView.centerYAnchor),
-            weekCommit.leadingAnchor.constraint(equalTo: userProfileView.trailingAnchor, constant: -80)
+            weekCommit.leadingAnchor.constraint(equalTo: userProfileView.trailingAnchor, constant: -80),
+            weekCommit.trailingAnchor.constraint(equalTo: userProfileView.trailingAnchor),
+            weekCommit.bottomAnchor.constraint(equalTo: userProfileView.bottomAnchor)
         ])
     }
     
