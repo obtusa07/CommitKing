@@ -29,6 +29,7 @@ class GithubAPIManager {
         UserDefaults.standard.set(uuid, forKey: "LoginCodeState")
         UIApplication.shared.open(url)
     }
+    
     // MARK: URL을 Scene에서 받아서 POST로 보내고 Token 받아오는 메서드
     static func tokenGenerate(url: URL) {
         guard let codeAndState = url.absoluteString.components(separatedBy: "code=").last else {
@@ -79,6 +80,7 @@ class GithubAPIManager {
             }
         }.resume()
     }
+    
     static func saveTokenInKeychain(token: GithubToken) {
         let tokenData = token.accessToken.data(using: .utf8)
         let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
@@ -96,6 +98,7 @@ class GithubAPIManager {
             }
         }
     }
+    
     static func findTokenInKeychain() -> String {
         let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
                                 kSecAttrService as String: Bundle.main.bundleIdentifier!,
@@ -119,6 +122,7 @@ class GithubAPIManager {
         }
         return token
     }
+    /// 전반적인 User의 정보를 모두 받아오는 메서드
     static func getMyInfo() {
         // TODO: getMyInfo는 로그인할 때 수행하고 화면에 반영하는 것까지 완료한 상태에서 다음 화면으로 가게 만들기
         guard let url = URL(string: GithubUrls.MYINFO) else {
@@ -147,6 +151,7 @@ class GithubAPIManager {
             }
         }.resume()
     }
+    
     static func totalCommits(username: String, days: Int, completion: @escaping (Int?, Error?) -> Void) {
         // MARK: days로 0이 들어가면 오늘 날짜, days가 음수면 Error
         if days < 0 {
@@ -192,6 +197,7 @@ class GithubAPIManager {
             }
         }.resume()
     }
+    
     static func logout() {
         // MARK: Keychain "TokenService"의 Token 데이터 삭제, UserDefaults의 토글 false
         let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,

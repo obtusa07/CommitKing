@@ -19,6 +19,8 @@
 		7B75763029A1F82B00AA4E35 /* UIColor+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B75762F29A1F82B00AA4E35 /* UIColor+extension.swift */; };
 		7BA4856C299F199F009BA679 /* UIImageView+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BA4856B299F199F009BA679 /* UIImageView+extension.swift */; };
 		7BA4856F299F2528009BA679 /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BA4856E299F2528009BA679 /* Cache.swift */; };
+		7BAFB62829C058EB009198E1 /* GithubToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BAFB62729C058EB009198E1 /* GithubToken.swift */; };
+		7BAFB62A29C05916009198E1 /* GithubMyInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BAFB62929C05916009198E1 /* GithubMyInfo.swift */; };
 		7BC7305F298E7C10002DA095 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BC7305E298E7C10002DA095 /* AppDelegate.swift */; };
 		7BC73061298E7C10002DA095 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BC73060298E7C10002DA095 /* SceneDelegate.swift */; };
 		7BC73063298E7C10002DA095 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BC73062298E7C10002DA095 /* LoginViewController.swift */; };
@@ -39,6 +41,8 @@
 		7B75762F29A1F82B00AA4E35 /* UIColor+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+extension.swift"; sourceTree = "<group>"; };
 		7BA4856B299F199F009BA679 /* UIImageView+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+extension.swift"; sourceTree = "<group>"; };
 		7BA4856E299F2528009BA679 /* Cache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cache.swift; sourceTree = "<group>"; };
+		7BAFB62729C058EB009198E1 /* GithubToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GithubToken.swift; sourceTree = "<group>"; };
+		7BAFB62929C05916009198E1 /* GithubMyInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GithubMyInfo.swift; sourceTree = "<group>"; };
 		7BC7305B298E7C10002DA095 /* CommitKing.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CommitKing.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7BC7305E298E7C10002DA095 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7BC73060298E7C10002DA095 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -64,8 +68,6 @@
 		7B012201299A530D00D72245 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				7BC73062298E7C10002DA095 /* LoginViewController.swift */,
-				7B0121FF299A52DB00D72245 /* MainViewController.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -108,6 +110,8 @@
 			children = (
 				7B49B15329977C4100EFD4D7 /* GithubConfig.swift */,
 				7B012203299B61D200D72245 /* GithubCommitsConfig.swift */,
+				7BAFB62729C058EB009198E1 /* GithubToken.swift */,
+				7BAFB62929C05916009198E1 /* GithubMyInfo.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -122,8 +126,18 @@
 		7BAFB62629C04DF8009198E1 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				7BC73062298E7C10002DA095 /* LoginViewController.swift */,
+				7B0121FF299A52DB00D72245 /* MainViewController.swift */,
 			);
 			path = Controllers;
+			sourceTree = "<group>";
+		};
+		7BAFB62B29C05C82009198E1 /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				7BC7307B298F8308002DA095 /* GithubAPIManager.swift */,
+			);
+			path = Managers;
 			sourceTree = "<group>";
 		};
 		7BC73052298E7C10002DA095 = {
@@ -146,12 +160,12 @@
 		7BC7305D298E7C10002DA095 /* CommitKing */ = {
 			isa = PBXGroup;
 			children = (
+				7BAFB62B29C05C82009198E1 /* Managers */,
 				7B012202299A53D000D72245 /* Resources */,
 				7BA4856D299F2519009BA679 /* Global */,
 				7BA48570299F2CCB009BA679 /* Models */,
 				7BAFB62529C04DBF009198E1 /* ViewModels */,
 				7B012201299A530D00D72245 /* Views */,
-				7BC7307B298F8308002DA095 /* GithubAPIManager.swift */,
 				7BAFB62629C04DF8009198E1 /* Controllers */,
 				7BC7306C298E7C11002DA095 /* Info.plist */,
 			);
@@ -269,8 +283,10 @@
 				7B75762E29A1E3B100AA4E35 /* UIView+extension.swift in Sources */,
 				7B75762A29A0B43300AA4E35 /* UIImage+extension.swift in Sources */,
 				7B49B15429977C4100EFD4D7 /* GithubConfig.swift in Sources */,
+				7BAFB62A29C05916009198E1 /* GithubMyInfo.swift in Sources */,
 				7B012200299A52DB00D72245 /* MainViewController.swift in Sources */,
 				7BC7305F298E7C10002DA095 /* AppDelegate.swift in Sources */,
+				7BAFB62829C058EB009198E1 /* GithubToken.swift in Sources */,
 				7BC73061298E7C10002DA095 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -9,7 +9,6 @@ import UIKit
 import Lottie
 
 class LoginViewController: UIViewController {
-    // TODO: 여기서 메인 로티 이미지 삽입할 예정, 로티 작업 거치기 전에 UI 작업으로 비어 있는 이미지 넣기
     private let loginCodingImageView: LottieAnimationView = {
         let imageView = LottieAnimationView(name: "LoginCodingImage")
         imageView.loopMode = .loop
