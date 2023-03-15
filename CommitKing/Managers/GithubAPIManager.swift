@@ -73,8 +73,11 @@ class GithubAPIManager {
             do {
                 let decoder = JSONDecoder()
                 let token = try decoder.decode(GithubToken.self, from: data)
-                // MARK: KeyChain에 토큰 저장. encrytion 불가 문제로 UserDefaults 대신 채택
+                // KeyChain에 토큰 저장. encrytion 불가 문제로 UserDefaults 대신 채택
                 GithubAPIManager.saveTokenInKeychain(token: token)
+                
+                // UserDefaults에 유저 데이터를 저장해주자
+                saveMyInfo()
             } catch {
                 preconditionFailure("Can't decode Token json Data")
             }
@@ -123,7 +126,7 @@ class GithubAPIManager {
         return token
     }
     /// 전반적인 User의 정보를 모두 받아오는 메서드
-    static func getMyInfo() {
+    static func saveMyInfo() {
         // TODO: getMyInfo는 로그인할 때 수행하고 화면에 반영하는 것까지 완료한 상태에서 다음 화면으로 가게 만들기
         guard let url = URL(string: GithubUrls.MYINFO) else {
             preconditionFailure("GithubConfig is broken. Fail to load TOKENURL")
@@ -145,8 +148,8 @@ class GithubAPIManager {
             do {
                 let decoder = JSONDecoder()
                 let result = try decoder.decode(GithubMyInfo.self, from: data)
-                // TODO: - 여기서 유저 정보를 UserDefaults로 넣어서 관리
-                print(result)
+                UserDefaults.standard.set(try? PropertyListEncoder().encode(result), forKey: "GithubMyInfo")
+                print("User data is saved")
             } catch {
                 preconditionFailure("Can't decode Token json Data")
             }

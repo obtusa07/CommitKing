@@ -18,8 +18,16 @@ class MainViewController: UIViewController {
     
     private let userImage: UIImageView = {
         let imageView = UIImageView()
-        // TODO: 하드 코딩 되어 있는 유저 정보를 로그인 단계에서 뽑아와서 하는 방식으로 바꿀 것
-        imageView.imageDownload(urlString: "https://avatars.githubusercontent.com/u/47441965?v=4", contentMode: .scaleToFill)
+        guard let data = UserDefaults.standard.value(forKey: "GithubMyInfo") as? Data else {
+            return UIImageView()
+        }
+        do {
+            let info = try PropertyListDecoder().decode(GithubMyInfo.self, from: data)
+            let avatarUrl = info.avatarURL
+            imageView.imageDownload(urlString: info.avatarURL, contentMode: .scaleToFill)
+        } catch {
+            imageView.image = UIImage(systemName: "x.square")
+        }
         imageView.layer.cornerRadius = 25
         imageView.clipsToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -141,8 +149,12 @@ class MainViewController: UIViewController {
     }
     
     let getUserAction = UIAction { _ in
-        // TODO: 이거 유저디폴츠에서 꺼내오는걸로 수정하기
-        GithubAPIManager.getMyInfo()
+        guard let data = UserDefaults.standard.value(forKey: "GithubMyInfo") as? Data else {
+            return
+        }
+        let info = try? PropertyListDecoder().decode(GithubMyInfo.self, from: data)
+        print(info?.name ?? "")
+
     }
     
     let getTotalCommitCount = UIAction { _ in
