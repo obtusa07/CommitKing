@@ -38,6 +38,7 @@ class LoginViewController: UIViewController {
         super.viewDidLoad()
         setupUI()
         buttonAction()
+        print("Token Status: \(UserDefaults.standard.bool(forKey: "isTokenAvailable"))")
     }
     private func setupUI() {
         // MARK: - View 세팅
@@ -51,26 +52,24 @@ class LoginViewController: UIViewController {
             loginCodingImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 30),
             loginCodingImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
             loginCodingImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
-            loginCodingImageView.heightAnchor.constraint(equalToConstant: 500)
-        ])
-        NSLayoutConstraint.activate([
+            loginCodingImageView.heightAnchor.constraint(equalToConstant: 500),
+
             loginButton.topAnchor.constraint(equalTo: loginCodingImageView.bottomAnchor, constant: 30),
             loginButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 50),
             loginButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -50),
-            loginButton.heightAnchor.constraint(equalToConstant: 58)
-        ])
-        NSLayoutConstraint.activate([
-//            loginButton.imageView!.bottomAnchor.constraint(equalTo: loginButton.bottomAnchor),
+            loginButton.heightAnchor.constraint(equalToConstant: 58),
+
             loginButton.imageView!.topAnchor.constraint(equalTo: loginButton.topAnchor, constant: 4),
             loginButton.imageView!.leadingAnchor.constraint(equalTo: loginButton.leadingAnchor, constant: 10)
-//            loginButton.imageView!.trailingAnchor.constraint(equalTo: loginButton.imageView!.leadingAnchor, constant: 50)
+
         ])
         }
     private func buttonAction() {
 //        loginButton.addAction(loginAction, for: .touchUpInside)
         loginButton.addTarget(self, action: #selector(goHome), for: .touchUpInside)
     }
-    @objc private func goHome() {
+    @objc
+    private func goHome() {
     #warning(": [BUG] 로그인이 실제로 안 되도 자동으로 넘어가는 문제가 있음 따로 행동을 정의하기 보다 GithubAPIManager에서 처리하는게 합리적일듯")
         GithubAPIManager.loginButtonClicked()
         let viewController = MainViewController()

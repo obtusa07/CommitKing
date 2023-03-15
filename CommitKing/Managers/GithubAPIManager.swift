@@ -13,7 +13,6 @@ class GithubAPIManager {
 //    static let shared = GithubAPIManager()
     static func loginButtonClicked() {
         let uuid = UUID().uuidString
-        print("오리지널 uuid: \(uuid)")
         guard var components = URLComponents(string: GithubConfig.CODEURL) else {
             preconditionFailure("GithubConfig is broken. Fail to load CODEURL")
         }
@@ -62,7 +61,9 @@ class GithubAPIManager {
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         request.setValue(String(paramData.count), forHTTPHeaderField: "Content-Length")
+        
         let configuration = URLSessionConfiguration.ephemeral // Code는 Credential이라 판단
+        
         URLSession(configuration: configuration).dataTask(with: request) { data, response, _ in
             guard let response = response as? HTTPURLResponse, (200..<300).contains(response.statusCode) else {
                 preconditionFailure("Failed to receive Token response \(String(describing: response))")
@@ -96,6 +97,9 @@ class GithubAPIManager {
             UserDefaults.standard.set(true, forKey: "isTokenAvailable")
         } else {
             if let error: String = SecCopyErrorMessageString(status, nil) as String? {
+                if error == "The specified item already exists in the keychain." {
+                    UserDefaults.standard.set(true, forKey: "isTokenAvailable")
+                }
                 print(error)
                 // MARK: 이 토큰이 어떤 기한을 가지는지 모르겠다. 토큰이 유효하지 않게 되면 여기서 해당 코드에 대한 error 처리를 해줘야 한다.
             }

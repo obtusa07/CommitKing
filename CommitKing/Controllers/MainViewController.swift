@@ -91,6 +91,7 @@ class MainViewController: UIViewController {
         super.viewDidLoad()
         addConstraints()
         buttonAction()
+        print("Token Status in main: \(UserDefaults.standard.bool(forKey: "isTokenAvailable"))")
     }
     
     func addConstraints() {
